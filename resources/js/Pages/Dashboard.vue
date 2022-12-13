@@ -1,30 +1,17 @@
 <template lang="">
     <button
         class="btn select-none"
-        @click="
-            $store.commit('notifikasi', {
-                tipe: 'success',
-                pesan: 'Data Telah Sukses',
-            })
-        "
+        @click="notifikasi('success', 'pesan sukses')"
     >
         Sukses
     </button>
     <button
         class="btn select-none"
-        @click="
-            $store.commit('notifikasi', {
-                tipe: 'warning',
-                pesan: 'Data Berbahaya',
-            })
-        "
+        @click="notifikasi('warning', 'pesan warning')"
     >
         warning
     </button>
-    <button
-        class="btn select-none"
-        @click="$store.commit('notifikasi', { tipe: 'error', pesan: 'error' })"
-    >
+    <button class="btn select-none" @click="notifikasi('error', 'pesan error')">
         error
     </button>
 </template>

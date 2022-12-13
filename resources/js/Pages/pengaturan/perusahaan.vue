@@ -155,10 +155,7 @@ export default {
             this.logo.post(route("pengaturan.perusahaan.logo_update"), {
                 onSuccess: () => {
                     this.logo.reset();
-                    this.$store.commit("notifikasi", {
-                        tipe: "success",
-                        pesan: "Logo berhasil diubah",
-                    });
+                    this.notifikasi("success", "logo berhasil diubah");
                 },
             });
         },
@@ -169,10 +166,7 @@ export default {
                 }),
                 {
                     onSuccess: () => {
-                        this.$store.commit("notifikasi", {
-                            tipe: "success",
-                            pesan: "perubahan berhasil disimpan",
-                        });
+                        this.notifikasi("success", "data berhasil disimpan");
                     },
                 }
             );

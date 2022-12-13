@@ -29,7 +29,13 @@ const store = createStore({
         },
     },
 });
-const mixin = {};
+const mixin = {
+    methods: {
+        notifikasi(status, data) {
+            this.$store.commit("notifikasi", { tipe: status, pesan: data });
+        },
+    },
+};
 
 createInertiaApp({
     resolve: (name) =>

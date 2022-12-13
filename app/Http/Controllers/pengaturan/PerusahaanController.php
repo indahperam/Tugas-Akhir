@@ -104,7 +104,7 @@ class PerusahaanController extends Controller
     {
         $perusahaan = auth()->user()->perusahaan();
         $logo = $request->foto;
-        $nama_logo = strtotime(date('ymdHis')) . '.' . $logo->extension();
+        $nama_logo = date('ymdHis') . '.' . $logo->extension();
         $logo->move(public_path('img'), $nama_logo);
         if ($perusahaan->logo != 'asset/logo.png') {
             if (file_exists(public_path($perusahaan->logo))) {
