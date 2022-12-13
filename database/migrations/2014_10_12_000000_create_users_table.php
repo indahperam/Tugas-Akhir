@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->integer('perusahaan_id')->default(0);
+            $table->enum('role', ['guest', 'kasir', 'admin']);
+            $table->integer('perusahaan_id')->default(1);
             $table->string('theme')->default('winter');
             $table->string('foto')->default('asset/profil.png');
             $table->rememberToken();

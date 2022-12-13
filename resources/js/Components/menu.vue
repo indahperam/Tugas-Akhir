@@ -52,12 +52,71 @@
         </li>
     </Link>
     <li class="menu-title mt-4" :class="{ hidden: sidebar }">
-        <span class="label-text truncate">Custom Menu</span>
+        <span class="label-text truncate">Master</span>
+    </li>
+    <Link :href="route('satuan.index')">
+        <li>
+            <a :class="{ active: $page.component == 'master/satuan' }">
+                <i class="fa-solid fa-folder"></i>
+                <div :class="{ hidden: sidebar }" class="truncate">Satuan</div>
+            </a>
+        </li>
+    </Link>
+    <Link :href="route('kategori.index')">
+        <li>
+            <a :class="{ active: $page.component == 'master/kategori' }">
+                <i class="fa-solid fa-folder-open"></i>
+                <div :class="{ hidden: sidebar }" class="truncate">
+                    Kategori
+                </div>
+            </a>
+        </li>
+    </Link>
+    <Link :href="route('produk.index')">
+        <li>
+            <a>
+                <i class="fa-brands fa-shopify"></i>
+                <div :class="{ hidden: sidebar }" class="truncate">Produk</div>
+            </a>
+        </li>
+    </Link>
+    <li>
+        <a>
+            <i class="fa-solid fa-user"></i>
+            <div :class="{ hidden: sidebar }" class="truncate">Member</div>
+        </a>
     </li>
     <li>
         <a>
-            <i class="fa fa-list"></i>
-            <div :class="{ hidden: sidebar }" class="truncate">Custom 1</div>
+            <i class="fa-solid fa-truck-fast"></i>
+            <div :class="{ hidden: sidebar }" class="truncate">Supplier</div>
+        </a>
+    </li>
+    <li class="menu-title mt-4" :class="{ hidden: sidebar }">
+        <span class="label-text truncate">Transaksi</span>
+    </li>
+    <li>
+        <a>
+            <i class="fa-solid fa-right-left"></i>
+            <div :class="{ hidden: sidebar }" class="truncate">Pengeluaran</div>
+        </a>
+    </li>
+    <li>
+        <a>
+            <i class="fa-solid fa-sack-dollar"></i>
+            <div :class="{ hidden: sidebar }" class="truncate">Penjualan</div>
+        </a>
+    </li>
+    <li>
+        <a>
+            <i class="fa-solid fa-truck"></i>
+            <div :class="{ hidden: sidebar }" class="truncate">Pembelian</div>
+        </a>
+    </li>
+    <li>
+        <a>
+            <i class="fa-solid fa-money-bill"></i>
+            <div :class="{ hidden: sidebar }" class="truncate">Hutang</div>
         </a>
     </li>
     <li class="menu-title mt-4" :class="{ hidden: sidebar }">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Perusahaan as AppPerusahaan;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class Perusahaan
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->perusahaan_id != 0) {
+        if (AppPerusahaan::count() > 0) {
             return $next($request);
         }
         return redirect()->route('perusahaan.create');

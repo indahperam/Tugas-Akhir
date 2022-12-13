@@ -1,0 +1,25 @@
+/* transisi group  */
+.list-enter-from,.list-leave-to {
+    opacity: 0%;
+}
+.list-leave-from,.list-enter-to {
+    opacity: 100%;
+}
+
+.list-enter-active {
+    animation: page-transisi-in 0.7s ease-in-out;
+}
+
+.list-leave-active {
+    animation: page-transisi-in 0.7s ease-in-out reverse;
+}
+
+@keyframes page-transisi-in {
+    0% {
+        opacity: 0%;
+    }
+
+    100% {
+        opacity: 100%;
+    }
+}

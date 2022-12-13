@@ -2,7 +2,9 @@
     <teleport to="body">
         <input type="checkbox" :id="id" class="modal-toggle" />
         <div class="modal">
-            <div class="modal-box">
+            <div
+                class="modal-box scrollbar-thin scrollbar-thumb-primary scrollbar-track-gray-100"
+            >
                 <h3 class="font-bold text-lg capitalize">
                     <slot name="title"></slot>
                 </h3>

@@ -1,19 +1,36 @@
 <template lang="">
-    <button
-        class="btn select-none"
-        @click="notifikasi('success', 'pesan sukses')"
-    >
-        Sukses
-    </button>
-    <button
-        class="btn select-none"
-        @click="notifikasi('warning', 'pesan warning')"
-    >
-        warning
-    </button>
-    <button class="btn select-none" @click="notifikasi('error', 'pesan error')">
-        error
-    </button>
+    <div class="grid grid-cols-4 gap-4">
+        <div class="card shadow-lg w-full">
+            <div class="card-body flex items-center w-full drop-shadow-lg">
+                <div class="card-title capitalize font-bold">
+                    Transaksi hari ini
+                </div>
+                <p class="font-semibold">123</p>
+            </div>
+        </div>
+        <div class="card shadow-lg w-full">
+            <div class="card-body flex items-center w-full drop-shadow-lg">
+                <div class="card-title capitalize font-bold">
+                    total Transaksi
+                </div>
+                <p class="font-semibold">123</p>
+            </div>
+        </div>
+        <div class="card shadow-lg w-full">
+            <div class="card-body flex items-center w-full drop-shadow-lg">
+                <div class="card-title capitalize font-bold">
+                    jumlah Transaksi
+                </div>
+                <p class="font-semibold">Rp 20.000.000.000</p>
+            </div>
+        </div>
+        <div class="card shadow-lg w-full">
+            <div class="card-body flex items-center w-full drop-shadow-lg">
+                <div class="card-title capitalize font-bold">Total hutang</div>
+                <p class="font-semibold">Rp 20.000.000.000</p>
+            </div>
+        </div>
+    </div>
 </template>
 <script>
 import LayoutMain from "@/Layouts/LayoutMain.vue";

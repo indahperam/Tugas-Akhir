@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\master\KategoriController;
+use App\Http\Controllers\master\ProdukController;
+use App\Http\Controllers\master\SatuanController;
 use App\Http\Controllers\pengaturan\PerusahaanController;
 use App\Http\Controllers\pengaturan\ProfilController;
 use App\Http\Controllers\pengaturan\UsersController;
@@ -35,6 +38,14 @@ Route::get('/dashboard', function () {
 
 
 Route::middleware('auth')->group(function () {
+    // master 
+    Route::prefix('master')->group(function () {
+        Route::resource('satuan', SatuanController::class);
+        Route::resource('kategori', KategoriController::class);
+        Route::resource('produk', ProdukController::class);
+    });
+
+    // pengaturan 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile/foto', [ProfileController::class, 'foto'])->name('profile.foto');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
