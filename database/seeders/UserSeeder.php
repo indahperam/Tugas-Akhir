@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Perusahaan;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
 
-class PerusahaanSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,9 +15,11 @@ class PerusahaanSeeder extends Seeder
      */
     public function run()
     {
-        Perusahaan::create([
-            'nama' => 'Koba POS',
-            'alamat' => '12312313',
+        User::create([
+            'name' => 'admin',
+            'email' => 'admin@admin.com',
+            'perusahaan_id' => 1,
+            'password' => bcrypt('password'),
         ]);
     }
 }

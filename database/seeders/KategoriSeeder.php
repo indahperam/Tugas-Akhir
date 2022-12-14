@@ -15,8 +15,11 @@ class KategoriSeeder extends Seeder
      */
     public function run()
     {
-        Kategori::create([
-            'nama' => 'Nama'
-        ]);
+        $kategori = ['racun rumput','vitamin karet','vitamin sawit'];
+        foreach ($kategori as $key => $value) {
+            Kategori::create([
+                'nama' => $value
+            ]);
+        }
     }
 }

@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Perusahaan;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class PerusahaanSeeder extends Seeder
+class SupplierSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,9 +14,6 @@ class PerusahaanSeeder extends Seeder
      */
     public function run()
     {
-        Perusahaan::create([
-            'nama' => 'Koba POS',
-            'alamat' => '12312313',
-        ]);
+        //
     }
 }

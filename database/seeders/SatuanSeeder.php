@@ -15,8 +15,11 @@ class SatuanSeeder extends Seeder
      */
     public function run()
     {
-        Satuan::create([
-            'nama' => 'pak'
-        ]);
+        $satuan = ['pak','lusin','kodi','kardus','pcs'];
+        foreach ($satuan as $key => $value) {
+            Satuan::create([
+                'nama' => $value
+            ]);
+        }
     }
 }

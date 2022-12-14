@@ -29,7 +29,7 @@
         <slot name="content"></slot>
         <div class="flex justify-center p-4">
             <div class="btn-group shadow-lg">
-                <template v-for="(item, index) in dataPage" :key="index">
+                <template v-for="(item, index) in dataPage" :key="index" v-if="dataTotal>inputShow">
                     <Link
                         :href="item.url"
                         class="btn btn-sm no-animation"

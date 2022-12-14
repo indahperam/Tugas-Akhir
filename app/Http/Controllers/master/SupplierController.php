@@ -3,32 +3,19 @@
 namespace App\Http\Controllers\master;
 
 use App\Http\Controllers\Controller;
-use App\Models\Member;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
-class MemberController extends Controller
+class SupplierController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $cari = $request->cari ?: null;
-        $page = $request->showItem ?: 5;
-        $member = Member::where('kode', 'like', "%" . $cari . "%")
-        ->orWhere('nama', 'like', "%" . $cari . "%")
-        ->orWhere('alamat', 'like', "%" . $cari . "%")
-        ->orWhere('kontak', 'like', "%" . $cari . "%")
-        ->orderBy('id','desc')
-        ->paginate($page)
-        ->withQueryString();
-        return inertia()->render('master/member',[
-            'member' => $member,
-            'search' => $cari,
-            'showItem' => $page,
-        ]);
+        //
     }
 
     /**
@@ -55,10 +42,10 @@ class MemberController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Member  $member
+     * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function show(Member $member)
+    public function show(Supplier $supplier)
     {
         //
     }
@@ -66,10 +53,10 @@ class MemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Member  $member
+     * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function edit(Member $member)
+    public function edit(Supplier $supplier)
     {
         //
     }
@@ -78,10 +65,10 @@ class MemberController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Member  $member
+     * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Member $member)
+    public function update(Request $request, Supplier $supplier)
     {
         //
     }
@@ -89,10 +76,10 @@ class MemberController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Member  $member
+     * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Member $member)
+    public function destroy(Supplier $supplier)
     {
         //
     }
