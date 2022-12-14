@@ -14,12 +14,14 @@
             <input-keypad
                 v-model:keypadValue="keypad"
                 :key="inputValue"
-                :id="Math.random() + 'number'"
+                :id="Math.random().toString(36)"
             ></input-keypad>
         </div>
-        <label class="label" v-if="error">
-            <span class="label-text-alt text-error">{{ error }}</span>
-        </label>
+        <transition name="list">
+            <label class="label" v-if="error">
+                <span class="label-text-alt text-error">{{ error }}</span>
+            </label>
+        </transition>
     </div>
 </template>
 <script>

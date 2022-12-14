@@ -16,6 +16,7 @@ import inputHargaVue from "./Components/inputHarga.vue";
 import inputSelectVue from "./Components/inputSelect.vue";
 import inputNumberVue from "./Components/inputNumber.vue";
 import inputKeypadVue from "./Components/inputKeypad.vue";
+import datatableVue from "./Components/datatableVue.vue";
 
 const store = createStore({
     state() {
@@ -71,6 +72,7 @@ createInertiaApp({
             .component("input-select", inputSelectVue)
             .component("input-number", inputNumberVue)
             .component("input-keypad", inputKeypadVue)
+            .component("datatable", datatableVue)
             .component("Head", Head)
             .mixin(mixin)
             .component("Link", Link)

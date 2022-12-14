@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\master\KategoriController;
+use App\Http\Controllers\master\MemberController;
 use App\Http\Controllers\master\ProdukController;
 use App\Http\Controllers\master\SatuanController;
 use App\Http\Controllers\pengaturan\PerusahaanController;
@@ -43,6 +44,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('satuan', SatuanController::class);
         Route::resource('kategori', KategoriController::class);
         Route::resource('produk', ProdukController::class);
+        Route::resource('member', MemberController::class);
     });
 
     // pengaturan 

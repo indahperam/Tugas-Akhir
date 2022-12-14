@@ -23,3 +23,30 @@
         opacity: 100%;
     }
 }
+
+.listv2-enter-from,.listv2-leave-to {
+    opacity: 0%;
+}
+.listv2-leave-from,.listv2-enter-to {
+    opacity: 100%;
+}
+
+.listv2-enter-active {
+    animation: page-transisi-in2 0.7s ease-in-out;
+}
+
+.listv2-leave-active {
+    animation: page-transisi-in2 0.7s ease-in-out reverse;
+}
+
+@keyframes page-transisi-in2 {
+    0% {
+        opacity: 0%;
+        transform: translateX(10%);
+    }
+
+    100% {
+        opacity: 100%;
+        transform: translateX(0%);
+    }
+}

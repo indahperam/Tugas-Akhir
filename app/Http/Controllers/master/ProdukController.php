@@ -15,12 +15,35 @@ class ProdukController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $produk = Produk::with(['kategori', 'satuan'])->orderBy('id', 'desc')->paginate(10);
+        $cari = $request->cari ?: null;
+        $page = $request->showItem ?: 5;
+        $produk = Produk::with(['kategori', 'satuan'])
+            ->where('kode', 'like', "%" . $cari . "%")
+            ->orWhere('nama', 'like', "%" . $cari . "%")
+            ->orWhereHas('kategori', function ($q) use ($cari) {
+                $q->where('nama', 'like', "%" . $cari . "%");
+            })
+            ->orWhereHas('satuan', function ($q) use ($cari) {
+                $q->where('nama', 'like', "%" . $cari . "%");
+            })
+            ->orWhere('harga_beli', 'like', "%" . $cari . "%")
+            ->orWhere('harga_jual', 'like', "%" . $cari . "%")
+            ->orWhere('stok', 'like', "%" . $cari . "%")
+            ->orderBy('id', 'desc')
+            ->paginate($page)
+            ->withQueryString();
         $kategori = Kategori::all();
         $satuan = satuan::all();
-        return inertia()->render('master/produk', ['produk' => $produk, 'kategori' => $kategori, 'satuan' => $satuan]);
+
+        return inertia()->render('master/produk', [
+            'produk' => $produk,
+            'kategori' => $kategori,
+            'satuan' => $satuan,
+            'search' => $cari,
+            'showItem' => $page,
+        ]);
     }
 
     /**

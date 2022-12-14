@@ -74,18 +74,20 @@
     </Link>
     <Link :href="route('produk.index')">
         <li>
-            <a>
+            <a :class="{ active: $page.component == 'master/produk' }">
                 <i class="fa-brands fa-shopify"></i>
                 <div :class="{ hidden: sidebar }" class="truncate">Produk</div>
             </a>
         </li>
     </Link>
-    <li>
-        <a>
-            <i class="fa-solid fa-user"></i>
-            <div :class="{ hidden: sidebar }" class="truncate">Member</div>
-        </a>
-    </li>
+    <Link :href="route('member.index')">
+        <li>
+            <a :class="{ active: $page.component == 'master/member' }">
+                <i class="fa-solid fa-user"></i>
+                <div :class="{ hidden: sidebar }" class="truncate">Member</div>
+            </a>
+        </li>
+    </Link>
     <li>
         <a>
             <i class="fa-solid fa-truck-fast"></i>

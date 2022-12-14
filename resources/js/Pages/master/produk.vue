@@ -1,71 +1,74 @@
 <template lang="">
     <div class="card shadow-lg">
         <div class="card-body">
-            <div class="card-title">
+            <div class="card-title mb-4">
                 List Data Produk
                 <label for="tambah" class="btn btn-xs btn-success"
                     ><i class="fa fa-plus"></i
                 ></label>
             </div>
-            <div class="flex flex-col gap-2">
-                <div class="flex justify-end gap-2 items-center">
-                    <div>Tampilkan</div>
-                    <select class="select select-sm select-bordered w-max">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                    </select>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="table table-compact w-full text-center">
-                        <thead>
-                            <tr>
-                                <th>kode</th>
-                                <th>nama</th>
-                                <th>kategori</th>
-                                <th>harga beli</th>
-                                <th>harga jual</th>
-                                <th>satuan</th>
-                                <th>stok</th>
-                                <th>action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr
-                                v-for="(item, index) in produk.data"
-                                :key="index"
-                                v-if="produk.data.length"
-                            >
-                                <td>{{ item.kode }}</td>
-                                <td class="capitalize">{{ item.nama }}</td>
-                                <td class="capitalize">
-                                    {{ item.kategori.nama }}
-                                </td>
-                                <td>{{ rupiah(item.harga_beli) }}</td>
-                                <td>{{ rupiah(item.harga_jual) }}</td>
-                                <td class="capitalize">
-                                    {{ item.satuan.nama }}
-                                </td>
-                                <td>{{ item.stok }}</td>
-                                <td class="gap-2 flex justify-center">
-                                    <label
-                                        @click="editProduk(item)"
-                                        for="edit"
-                                        class="btn btn-xs btn-info"
-                                        ><i class="fa fa-pen"></i
-                                    ></label>
-                                    <label
-                                        @click="hapusProduk(item)"
-                                        for="hapus"
-                                        class="btn btn-xs btn-error"
-                                        ><i class="fa fa-trash"></i
-                                    ></label>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <datatable
+                :dataPage="produk.links"
+                :dataTotal="produk.total"
+                v-model:inputSearch="cari"
+                v-model:inputShow="itemShow"
+            >
+                <template v-slot:content>
+                    <div class="overflow-x-auto scrollbar-hide">
+                        <table class="table table-compact w-full text-center shadow-lg">
+                            <thead>
+                                <tr>
+                                    <th>kode</th>
+                                    <th>nama</th>
+                                    <th>kategori</th>
+                                    <th>harga beli</th>
+                                    <th>harga jual</th>
+                                    <th>satuan</th>
+                                    <th>stok</th>
+                                    <th>action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <transition-group name="listv2">
+                                    <tr
+                                        v-for="(item, index) in produk.data"
+                                        :key="item.id"
+                                        v-if="produk.data.length"
+                                    >
+                                        <td>{{ item.kode }}</td>
+                                        <td class="capitalize">
+                                            {{ item.nama }}
+                                        </td>
+                                        <td class="capitalize">
+                                            {{ item.kategori.nama }}
+                                        </td>
+                                        <td>{{ rupiah(item.harga_beli) }}</td>
+                                        <td>{{ rupiah(item.harga_jual) }}</td>
+                                        <td class="capitalize">
+                                            {{ item.satuan.nama }}
+                                        </td>
+                                        <td>{{ item.stok }}</td>
+                                        <td class="gap-2 flex justify-center">
+                                            <label
+                                                @click="editProduk(item)"
+                                                for="edit"
+                                                class="btn btn-xs btn-info"
+                                                ><i class="fa fa-pen"></i
+                                            ></label>
+                                            <label
+                                                @click="hapusProduk(item)"
+                                                for="hapus"
+                                                class="btn btn-xs btn-error"
+                                                ><i class="fa fa-trash"></i
+                                            ></label>
+                                        </td>
+                                    </tr>
+                                </transition-group>
+                            </tbody>
+                        </table>
+                    </div>
+                </template>
+            </datatable>
         </div>
     </div>
     <modal-md id="tambah">
@@ -193,6 +196,44 @@ export default {
         satuan: Array,
         kategori: Array,
         produk: Object,
+        search: String,
+        showItem: String,
+    },
+    data() {
+        return {
+            cari: this.search,
+            itemShow: this.showItem,
+        };
+    },
+    watch: {
+        cari() {
+            this.$inertia.visit(
+                route("produk.index", {
+                    cari: this.cari,
+                    showItem: this.itemShow,
+                }),
+                {
+                    preserveState: true,
+                    preserveScroll: true,
+                    replace: true,
+                    only: ["search", "produk"],
+                }
+            );
+        },
+        itemShow(){
+            this.$inertia.visit(
+                route("produk.index", {
+                    cari: this.cari,
+                    showItem: this.itemShow,
+                }),
+                {
+                    preserveState: true,
+                    preserveScroll: true,
+                    replace: true,
+                    only: ["search", "produk"],
+                }
+            );
+        }
     },
     setup() {
         const tambah = useForm({

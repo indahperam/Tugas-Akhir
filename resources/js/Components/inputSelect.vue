@@ -13,9 +13,11 @@
                 {{ item.nama }}
             </option>
         </select>
-        <label class="label" v-if="error">
-            <span class="label-text-alt text-error">{{ error }}</span>
-        </label>
+        <transition name="list">
+            <label class="label" v-if="error">
+                <span class="label-text-alt text-error">{{ error }}</span>
+            </label>
+        </transition>
     </div>
 </template>
 <script>

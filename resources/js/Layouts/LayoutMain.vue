@@ -84,7 +84,7 @@
                     class="p-5 pt-[4rem] overflow-x-hidden scrollbar-thin scrollbar-thumb-primary scrollbar-track-gray-100"
                 >
                     <transition name="page" mode="out-in" appear>
-                        <main :key="$page.url">
+                        <main :key="$page.component">
                             <div
                                 class="text-3xl font-semibold drop-shadow-lg capitalize"
                             >
