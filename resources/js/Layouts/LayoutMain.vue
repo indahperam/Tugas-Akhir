@@ -5,6 +5,7 @@
                 $page.component
                     .split("/")
                     [$page.component.split("/").length - 1].toUpperCase()
+                    .replace("_", " ")
             }}
             | {{ user_aktif.perusahaan.nama }}
         </title>
@@ -89,9 +90,12 @@
                                 class="text-3xl font-semibold drop-shadow-lg capitalize"
                             >
                                 {{
-                                    $page.component.split("/")[
-                                        $page.component.split("/").length - 1
-                                    ]
+                                    $page.component
+                                        .split("/")
+                                        [
+                                            $page.component.split("/").length -
+                                                1
+                                        ].replace("_", " ")
                                 }}
                             </div>
                             <div
@@ -103,7 +107,7 @@
                                             '/'
                                         )"
                                     >
-                                        {{ item }}
+                                        {{ item.replace("_", " ") }}
                                     </li>
                                 </ul>
                             </div>

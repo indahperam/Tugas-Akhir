@@ -13,9 +13,22 @@ class SupplierController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $cari = $request->cari ?: null;
+        $page = $request->showItem ?: 5;
+        $supplier = Supplier::where('kode', 'like', "%" . $cari . "%")
+            ->orWhere('nama', 'like', "%" . $cari . "%")
+            ->orWhere('alamat', 'like', "%" . $cari . "%")
+            ->orWhere('kontak', 'like', "%" . $cari . "%")
+            ->orderBy('id', 'desc')
+            ->paginate($page)
+            ->withQueryString();
+        return inertia()->render('master/supplier', [
+            'supplier' => $supplier,
+            'search' => $cari,
+            'showItem' => $page,
+        ]);
     }
 
     /**
@@ -36,7 +49,14 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama' => 'required',
+            'kontak' => 'required',
+            'alamat' => 'required',
+        ]);
+        $supplier = Supplier::create($request->all());
+        $supplier->kode = "P-" . sprintf("%05s", $supplier->id);
+        $supplier->update();
     }
 
     /**
@@ -70,7 +90,18 @@ class SupplierController extends Controller
      */
     public function update(Request $request, Supplier $supplier)
     {
-        //
+        $request->validate([
+            'nama' => 'required',
+            'kontak' => 'required',
+            'alamat' => 'required',
+        ]);
+
+        if ($request->nama != $supplier->nama) {
+            $request->validate([
+                'nama' => 'unique:suppliers'
+            ]);
+        }
+        $supplier->update($request->all());
     }
 
     /**
@@ -81,6 +112,6 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        //
+        $supplier->delete();
     }
 }

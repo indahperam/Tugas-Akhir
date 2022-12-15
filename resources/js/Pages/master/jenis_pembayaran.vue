@@ -1,49 +1,42 @@
 <template lang="">
     <div class="card shadow-lg">
         <div class="card-body">
-            <div class="card-title">
-                List Data Kategori
+            <div class="card-title mb-4">
+                List Jenis Pembayaran
                 <label for="tambah" class="btn btn-xs btn-success"
                     ><i class="fa fa-plus"></i
                 ></label>
             </div>
-            <div class="overflow-x-auto">
-                <table class="table table-compact w-full card">
+            <div class="overflow-x-auto scrollbar-hide">
+                <table class="table table-compact w-full text-center">
                     <thead>
                         <tr>
-                            <td>No.</td>
-                            <td>nama</td>
+                            <td>jenis</td>
+                            <td>no rek</td>
                             <td>action</td>
                         </tr>
                     </thead>
                     <tbody>
-                        <transition-group name="list">
+                        <transition-group name="listv2">
                             <tr
-                                v-for="(item, index) in kategori"
-                                :key="index"
-                                class="capitalize"
-                                v-if="kategori.length"
+                                v-for="(item, index) in jenis_pembayaran"
+                                :key="item.id"
                             >
-                                <td class="pl-4">{{ index + 1 }}</td>
-                                <td>{{ item.nama }}</td>
-                                <td class="flex gap-2">
+                                <td>{{ item.jenis }}</td>
+                                <td>{{ item.no_rek }}</td>
+                                <td class="flex justify-center gap-2">
                                     <label
                                         for="edit"
-                                        @click="editKategori(item)"
                                         class="btn btn-xs btn-info"
+                                        @click="editJenisPembayaran(item)"
                                         ><i class="fa fa-pen"></i
                                     ></label>
                                     <label
                                         for="hapus"
-                                        @click="hapusKategori(item)"
                                         class="btn btn-xs btn-error"
+                                        @click="hapusJenisPembayaran(item)"
                                         ><i class="fa fa-trash"></i
                                     ></label>
-                                </td>
-                            </tr>
-                            <tr v-else>
-                                <td colspan="3" class="text-center">
-                                    Belum Ada Data
                                 </td>
                             </tr>
                         </transition-group>
@@ -53,61 +46,67 @@
         </div>
     </div>
     <modal-md id="tambah">
-        <template v-slot:title>Tambah Kategori</template>
-        <template v-slot:content>
-            <input-text
-                title="Nama Kategori"
-                v-model:inputValue="tambah.nama"
-                :error="tambah.errors.nama"
-            ></input-text>
-        </template>
+        <template v-slot:title>Tambah Jenis Pembayaran</template>
+        <template v-slot:content
+            ><input-text
+                title="Jenis Pembayaran"
+                v-model:inputValue="tambah.jenis"
+                :error="tambah.errors.jenis"
+            ></input-text
+            ><input-text
+                title="No Rekening"
+                v-model:inputValue="tambah.no_rek"
+                :error="tambah.errors.no_rek"
+            ></input-text
+        ></template>
         <template v-slot:action
             ><button
-                @click="submitTambah"
                 class="btn btn-success"
                 :class="{ 'loading btn-disabled': tambah.processing }"
+                @click="submitTambah"
             >
                 tambah
             </button></template
         >
     </modal-md>
+
     <modal-md id="edit">
-        <template v-slot:title>Edit Kategori {{ edit.nama }}</template>
-        <template v-slot:content>
-            <input-text
-                title="Nama Kategori"
-                v-model:inputValue="edit.nama"
-                :error="edit.errors.nama"
-            ></input-text>
-        </template>
+        <template v-slot:title>Ubah Jenis Pembayaran</template>
+        <template v-slot:content
+            ><input-text
+                title="Jenis Pembayaran"
+                v-model:inputValue="edit.jenis"
+                :error="edit.errors.jenis"
+            ></input-text
+            ><input-text
+                title="No Rekening"
+                v-model:inputValue="edit.no_rek"
+                :error="edit.errors.no_rek"
+            ></input-text
+        ></template>
         <template v-slot:action
             ><button
-                @click="submitEdit"
                 class="btn btn-success"
                 :class="{ 'loading btn-disabled': edit.processing }"
+                @click="submitEdit"
             >
                 edit
             </button></template
         >
     </modal-md>
     <modal-md id="hapus">
-        <template v-slot:title>Hapus Kategori {{ hapus.nama }}</template>
-        <template v-slot:content>
-            <p>
-                Produk yang terkait dengan <b>'{{ hapus.nama }}'</b> akan di
-                hapus secara permanen. Pindahkan terlebih dahulu data untuk
-                melanjutkan.
-            </p>
-        </template>
-        <template v-slot:action>
-            <button
+        <template v-slot:title
+            >Hapus Jenis Pembayaran {{ hapus.jenis }}</template
+        >
+        <template v-slot:action
+            ><button
                 class="btn btn-error"
-                @click="submitHapus"
                 :class="{ 'loading btn-disabled': hapus.processing }"
+                @click="submitHapus"
             >
                 hapus
-            </button>
-        </template>
+            </button></template
+        >
     </modal-md>
 </template>
 <script>
@@ -117,19 +116,21 @@ import { useForm } from "@inertiajs/inertia-vue3";
 export default {
     layout: LayoutMain,
     props: {
-        kategori: Array,
+        jenis_pembayaran: Array,
     },
     setup() {
         const tambah = useForm({
-            nama: null,
+            jenis: null,
+            no_rek: null,
         });
         const edit = useForm({
             id: null,
-            nama: null,
+            jenis: null,
+            no_rek: null,
         });
         const hapus = useForm({
             id: null,
-            nama: null,
+            jenis: null,
         });
         return {
             tambah,
@@ -139,49 +140,59 @@ export default {
     },
     methods: {
         submitTambah() {
-            this.tambah.post(route("kategori.store"), {
+            this.tambah.post(route("jenis-pembayaran.store"), {
                 onSuccess: () => {
                     this.tambah.reset();
+                    this.notifikasi(
+                        "success",
+                        "jenis pembayaran telah ditambahkan"
+                    );
                     this.modal_close("tambah");
-                    this.notifikasi("success", "kategori berhasil ditambahkan");
                 },
             });
         },
         submitEdit() {
             this.edit.put(
-                route("kategori.update", {
-                    kategori: this.edit.id,
+                route("jenis-pembayaran.update", {
+                    jenis_pembayaran: this.edit.id,
                 }),
                 {
                     onSuccess: () => {
                         this.edit.reset();
+                        this.notifikasi(
+                            "success",
+                            "perubahan berhasil disimpan"
+                        );
                         this.modal_close("edit");
-                        this.notifikasi("success", "data berhasil disimpan");
                     },
                 }
             );
         },
         submitHapus() {
             this.hapus.delete(
-                route("kategori.destroy", {
-                    kategori: this.hapus.id,
+                route("jenis-pembayaran.destroy", {
+                    jenis_pembayaran: this.hapus.id,
                 }),
                 {
                     onSuccess: () => {
                         this.hapus.reset();
+                        this.notifikasi(
+                            "success",
+                            "jenis pembayaran berhasil di hapus"
+                        );
                         this.modal_close("hapus");
-                        this.notifikasi("success", "kategori berhasil dihapus");
                     },
                 }
             );
         },
-        editKategori(data) {
+        editJenisPembayaran(data) {
             this.edit.id = data.id;
-            this.edit.nama = data.nama;
+            this.edit.jenis = data.jenis;
+            this.edit.no_rek = data.no_rek;
         },
-        hapusKategori(data) {
+        hapusJenisPembayaran(data) {
             this.hapus.id = data.id;
-            this.hapus.nama = data.nama;
+            this.hapus.jenis = data.jenis;
         },
     },
 };

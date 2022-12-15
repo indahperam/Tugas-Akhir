@@ -88,21 +88,47 @@
             </a>
         </li>
     </Link>
-    <li>
-        <a>
-            <i class="fa-solid fa-truck-fast"></i>
-            <div :class="{ hidden: sidebar }" class="truncate">Supplier</div>
-        </a>
-    </li>
+    <Link :href="route('supplier.index')">
+        <li>
+            <a :class="{ active: $page.component == 'master/supplier' }">
+                <i class="fa-solid fa-truck-fast"></i>
+                <div :class="{ hidden: sidebar }" class="truncate">
+                    Supplier
+                </div>
+            </a>
+        </li>
+    </Link>
+    <Link :href="route('jenis-pembayaran.index')">
+        <li>
+            <a
+                :class="{
+                    active: $page.component == 'master/jenis_pembayaran',
+                }"
+            >
+                <i class="fa-solid fa-dollar-sign"></i>
+                <div :class="{ hidden: sidebar }" class="truncate">
+                    Jenis Pembayaran
+                </div>
+            </a>
+        </li>
+    </Link>
     <li class="menu-title mt-4" :class="{ hidden: sidebar }">
         <span class="label-text truncate">Transaksi</span>
     </li>
-    <li>
-        <a>
-            <i class="fa-solid fa-right-left"></i>
-            <div :class="{ hidden: sidebar }" class="truncate">Pengeluaran</div>
-        </a>
-    </li>
+    <Link :href="route('pengeluaran.index')">
+        <li>
+            <a
+                :class="{
+                    active: $page.component == 'transaksi/pengeluaran',
+                }"
+            >
+                <i class="fa-solid fa-right-left"></i>
+                <div :class="{ hidden: sidebar }" class="truncate">
+                    Pengeluaran
+                </div>
+            </a>
+        </li>
+    </Link>
     <li>
         <a>
             <i class="fa-solid fa-sack-dollar"></i>

@@ -3,19 +3,13 @@
         <label class="label" v-if="title">
             <span class="label-text">{{ title }}</span>
         </label>
-        <select
-            class="select select-bordered w-full select-sm"
+        <input
+            type="date"
+            class="input input-bordered input-sm"
             :value="inputValue"
             @input="$emit('update:inputValue', $event.target.value)"
             :placeholder="`Masukkan ${title}`"
-        >
-            <option
-                v-for="item in dataSelect"
-                :value="label ? item[label] : item.id"
-            >
-                {{ label ? item[label] : item.nama }}
-            </option>
-        </select>
+        />
         <transition name="list">
             <label class="label" v-if="error">
                 <span class="label-text-alt text-error">{{ error }}</span>
@@ -25,7 +19,7 @@
 </template>
 <script>
 export default {
-    props: ["inputValue", "error", "title", "dataSelect", "label"],
+    props: ["inputValue", "error", "title"],
 };
 </script>
 <style lang=""></style>

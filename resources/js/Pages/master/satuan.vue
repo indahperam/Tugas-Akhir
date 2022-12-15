@@ -11,9 +11,9 @@
                 <table class="table w-full table-compact shadow card">
                     <thead>
                         <tr>
-                            <th>No.</th>
-                            <th>Nama</th>
-                            <th>action</th>
+                            <td>No.</td>
+                            <td>Nama</td>
+                            <td>action</td>
                         </tr>
                     </thead>
                     <tbody>

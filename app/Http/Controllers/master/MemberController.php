@@ -18,13 +18,13 @@ class MemberController extends Controller
         $cari = $request->cari ?: null;
         $page = $request->showItem ?: 5;
         $member = Member::where('kode', 'like', "%" . $cari . "%")
-        ->orWhere('nama', 'like', "%" . $cari . "%")
-        ->orWhere('alamat', 'like', "%" . $cari . "%")
-        ->orWhere('kontak', 'like', "%" . $cari . "%")
-        ->orderBy('id','desc')
-        ->paginate($page)
-        ->withQueryString();
-        return inertia()->render('master/member',[
+            ->orWhere('nama', 'like', "%" . $cari . "%")
+            ->orWhere('alamat', 'like', "%" . $cari . "%")
+            ->orWhere('kontak', 'like', "%" . $cari . "%")
+            ->orderBy('id', 'desc')
+            ->paginate($page)
+            ->withQueryString();
+        return inertia()->render('master/member', [
             'member' => $member,
             'search' => $cari,
             'showItem' => $page,
@@ -49,7 +49,14 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama' => 'required',
+            'kontak' => 'required',
+            'alamat' => 'required',
+        ]);
+        $member = Member::create($request->all());
+        $member->kode = "P-" . sprintf("%05s", $member->id);
+        $member->update();
     }
 
     /**
@@ -83,7 +90,18 @@ class MemberController extends Controller
      */
     public function update(Request $request, Member $member)
     {
-        //
+        $request->validate([
+            'nama' => 'required',
+            'kontak' => 'required',
+            'alamat' => 'required',
+        ]);
+
+        if ($request->nama != $member->nama) {
+            $request->validate([
+                'nama' => 'unique:members'
+            ]);
+        }
+        $member->update($request->all());
     }
 
     /**
@@ -94,6 +112,6 @@ class MemberController extends Controller
      */
     public function destroy(Member $member)
     {
-        //
+        $member->delete();
     }
 }

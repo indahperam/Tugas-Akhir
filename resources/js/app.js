@@ -17,6 +17,8 @@ import inputSelectVue from "./Components/inputSelect.vue";
 import inputNumberVue from "./Components/inputNumber.vue";
 import inputKeypadVue from "./Components/inputKeypad.vue";
 import datatableVue from "./Components/datatableVue.vue";
+import inputTextAreaVue from "./Components/inputTextArea.vue";
+import inputDateVue from "./Components/inputDate.vue";
 
 const store = createStore({
     state() {
@@ -72,6 +74,8 @@ createInertiaApp({
             .component("input-select", inputSelectVue)
             .component("input-number", inputNumberVue)
             .component("input-keypad", inputKeypadVue)
+            .component("input-textarea", inputTextAreaVue)
+            .component("input-date", inputDateVue)
             .component("datatable", datatableVue)
             .component("Head", Head)
             .mixin(mixin)

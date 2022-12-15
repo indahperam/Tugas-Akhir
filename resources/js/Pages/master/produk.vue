@@ -15,17 +15,19 @@
             >
                 <template v-slot:content>
                     <div class="overflow-x-auto scrollbar-hide">
-                        <table class="table table-compact w-full text-center shadow-lg">
+                        <table
+                            class="table table-compact w-full text-center shadow-lg"
+                        >
                             <thead>
                                 <tr>
-                                    <th>kode</th>
-                                    <th>nama</th>
-                                    <th>kategori</th>
-                                    <th>harga beli</th>
-                                    <th>harga jual</th>
-                                    <th>satuan</th>
-                                    <th>stok</th>
-                                    <th>action</th>
+                                    <td>kode</td>
+                                    <td>nama</td>
+                                    <td>kategori</td>
+                                    <td>harga beli</td>
+                                    <td>harga jual</td>
+                                    <td>satuan</td>
+                                    <td>stok</td>
+                                    <td>action</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -197,7 +199,7 @@ export default {
         kategori: Array,
         produk: Object,
         search: String,
-        showItem: String,
+        showItem: Number,
     },
     data() {
         return {
@@ -220,7 +222,7 @@ export default {
                 }
             );
         },
-        itemShow(){
+        itemShow() {
             this.$inertia.visit(
                 route("produk.index", {
                     cari: this.cari,
@@ -233,7 +235,7 @@ export default {
                     only: ["search", "produk"],
                 }
             );
-        }
+        },
     },
     setup() {
         const tambah = useForm({

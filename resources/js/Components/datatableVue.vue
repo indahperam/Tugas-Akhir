@@ -7,8 +7,31 @@
                     class="input input-sm input-bordered shadow-md"
                     placeholder="Cari"
                     :value="inputSearch"
-                    @input="$emit('update:inputSearch', $event.target.value),loading_state()"
+                    @input="
+                        $emit('update:inputSearch', $event.target.value),
+                            loading_state()
+                    "
                 />
+            </div>
+            <div class="flex justify-center gap-4" v-if="inputDate">
+                <div class="flex gap-2 items-center">
+                    <label class="label">Dari</label>
+                    <input
+                        :value="dateStart"
+                        type="date"
+                        class="input input-bordered input-sm"
+                        @change="$emit('update:dateStart', $event.target.value)"
+                    />
+                </div>
+                <div class="flex gap-2 items-center">
+                    <label class="label">Sampai</label>
+                    <input
+                        :value="dateEnd"
+                        type="date"
+                        class="input input-bordered input-sm"
+                        @change="$emit('update:dateEnd', $event.target.value)"
+                    />
+                </div>
             </div>
             <div class="flex gap-7 items-center">
                 <div class="">Total Item : {{ dataTotal }}</div>
@@ -27,9 +50,16 @@
             </div>
         </div>
         <slot name="content"></slot>
+        <div class="flex justify-center" v-if="dataTotal == 0">
+            Tidak Ada Data
+        </div>
         <div class="flex justify-center p-4">
             <div class="btn-group shadow-lg">
-                <template v-for="(item, index) in dataPage" :key="index" v-if="dataTotal>inputShow">
+                <template
+                    v-for="(item, index) in dataPage"
+                    :key="index"
+                    v-if="dataTotal > inputShow"
+                >
                     <Link
                         :href="item.url"
                         class="btn btn-sm no-animation"
@@ -51,6 +81,9 @@ export default {
         dataTotal: Number,
         inputSearch: String,
         inputShow: Number,
+        inputDate: Boolean,
+        dateStart: String,
+        dateEnd: String,
     },
     data() {
         return {

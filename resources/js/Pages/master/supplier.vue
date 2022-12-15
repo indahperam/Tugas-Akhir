@@ -2,15 +2,15 @@
     <div class="card shadow-lg">
         <div class="card-body">
             <div class="card-title">
-                List Data Member
+                List Data Supplier
                 <label for="tambah" class="btn btn-xs btn-success"
                     ><i class="fa fa-plus"></i
                 ></label>
             </div>
             <div class="mt-4">
                 <datatable
-                    :dataPage="member.links"
-                    :dataTotal="member.total"
+                    :dataPage="supplier.links"
+                    :dataTotal="supplier.total"
                     v-model:inputSearch="cari"
                     v-model:inputShow="itemShow"
                 >
@@ -31,7 +31,9 @@
                                 <tbody>
                                     <transition-group name="listv2">
                                         <tr
-                                            v-for="(item, index) in member.data"
+                                            v-for="(
+                                                item, index
+                                            ) in supplier.data"
                                             :key="item.id"
                                         >
                                             <td>{{ item.kode }}</td>
@@ -45,13 +47,13 @@
                                             >
                                                 <label
                                                     for="edit"
-                                                    @click="editMember(item)"
+                                                    @click="editSupplier(item)"
                                                     class="btn btn-xs btn-info"
                                                     ><i class="fa fa-pen"></i
                                                 ></label>
                                                 <label
                                                     for="hapus"
-                                                    @click="hapusMember(item)"
+                                                    @click="hapusSupplier(item)"
                                                     class="btn btn-xs btn-error"
                                                     ><i class="fa fa-trash"></i
                                                 ></label>
@@ -67,10 +69,10 @@
         </div>
     </div>
     <modal-md id="tambah">
-        <template v-slot:title>Tambah Member</template>
+        <template v-slot:title>Tambah Supplier</template>
         <template v-slot:content>
             <input-text
-                title="Nama Member"
+                title="Nama Supplier"
                 v-model:inputValue="tambah.nama"
                 :error="tambah.errors.nama"
             ></input-text>
@@ -97,10 +99,10 @@
     </modal-md>
 
     <modal-md id="edit">
-        <template v-slot:title>Edit Member {{ edit.kode }}</template>
+        <template v-slot:title>Edit Supplier {{ edit.kode }}</template>
         <template v-slot:content>
             <input-text
-                title="Nama Member"
+                title="Nama Supplier"
                 v-model:inputValue="edit.nama"
                 :error="edit.errors.nama"
             ></input-text>
@@ -126,7 +128,7 @@
         </template>
     </modal-md>
     <modal-md id="hapus">
-        <template v-slot:title>Hapus Member {{ hapus.nama }}</template>
+        <template v-slot:title>Hapus Supplier {{ hapus.nama }}</template>
         <template v-slot:action>
             <button
                 class="btn btn-error"
@@ -169,18 +171,18 @@ export default {
     },
     methods: {
         submitTambah() {
-            this.tambah.post(route("member.store"), {
+            this.tambah.post(route("supplier.store"), {
                 onSuccess: () => {
                     this.tambah.reset();
-                    this.notifikasi("success", "member berhasil ditambahkan");
+                    this.notifikasi("success", "supplier berhasil ditambahkan");
                     this.modal_close("tambah");
                 },
             });
         },
         submitEdit() {
             this.edit.put(
-                route("member.update", {
-                    member: this.edit.id,
+                route("supplier.update", {
+                    supplier: this.edit.id,
                 }),
                 {
                     onSuccess: () => {
@@ -196,8 +198,8 @@ export default {
         },
         submitHapus() {
             this.hapus.delete(
-                route("member.destroy", {
-                    member: this.hapus.id,
+                route("supplier.destroy", {
+                    supplier: this.hapus.id,
                 }),
                 {
                     onSuccess: () => {
@@ -211,20 +213,20 @@ export default {
                 }
             );
         },
-        editMember(data) {
+        editSupplier(data) {
             this.edit.id = data.id;
             this.edit.kode = data.kode;
             this.edit.nama = data.nama;
             this.edit.kontak = data.kontak;
             this.edit.alamat = data.alamat;
         },
-        hapusMember(data) {
+        hapusSupplier(data) {
             this.hapus.id = data.id;
             this.hapus.nama = data.nama;
         },
     },
     props: {
-        member: Object,
+        supplier: Object,
         search: String,
         showItem: String,
     },
@@ -237,7 +239,7 @@ export default {
     watch: {
         cari() {
             this.$inertia.visit(
-                route("member.index", {
+                route("supplier.index", {
                     cari: this.cari,
                     showItem: this.itemShow,
                 }),
@@ -245,13 +247,13 @@ export default {
                     preserveState: true,
                     preserveScroll: true,
                     replace: true,
-                    only: ["search", "member"],
+                    only: ["search", "supplier"],
                 }
             );
         },
         itemShow() {
             this.$inertia.visit(
-                route("member.index", {
+                route("supplier.index", {
                     cari: this.cari,
                     showItem: this.itemShow,
                 }),
@@ -259,7 +261,7 @@ export default {
                     preserveState: true,
                     preserveScroll: true,
                     replace: true,
-                    only: ["search", "member"],
+                    only: ["search", "supplier"],
                 }
             );
         },
