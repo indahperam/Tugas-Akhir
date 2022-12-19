@@ -16,11 +16,11 @@ class ProdukSeeder extends Seeder
     public function run()
     {
         $produk = [];
-        for ($i = 0; $i < 1000; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $harga_beli = rand(10, 100) * 1000;
             $produk[] = [
-                'kode' => "P-" . sprintf("%05s", ($i +1)),
-                'nama' => "produk ".($i+1),
+                'kode' => "P-" . sprintf("%05s", ($i + 1)),
+                'nama' => "produk " . ($i + 1),
                 'kategori_id' => 1,
                 'satuan_id' => 1,
                 'harga_beli' => $harga_beli,

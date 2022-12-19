@@ -129,12 +129,20 @@
             </a>
         </li>
     </Link>
-    <li>
-        <a>
-            <i class="fa-solid fa-sack-dollar"></i>
-            <div :class="{ hidden: sidebar }" class="truncate">Penjualan</div>
-        </a>
-    </li>
+    <Link :href="route('penjualan.index')">
+        <li>
+            <a
+                :class="{
+                    active: $page.component == 'transaksi/penjualan',
+                }"
+            >
+                <i class="fa-solid fa-sack-dollar"></i>
+                <div :class="{ hidden: sidebar }" class="truncate">
+                    Penjualan
+                </div>
+            </a>
+        </li>
+    </Link>
     <li>
         <a>
             <i class="fa-solid fa-truck"></i>

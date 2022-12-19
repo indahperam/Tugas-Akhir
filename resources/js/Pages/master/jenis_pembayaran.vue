@@ -24,7 +24,10 @@
                             >
                                 <td>{{ item.jenis }}</td>
                                 <td>{{ item.no_rek }}</td>
-                                <td class="flex justify-center gap-2">
+                                <td
+                                    v-if="item.id != 1"
+                                    class="flex justify-center gap-2"
+                                >
                                     <label
                                         for="edit"
                                         class="btn btn-xs btn-info"

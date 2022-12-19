@@ -1,10 +1,21 @@
 <template lang="">
     <!-- The button to open modal -->
-    <label :for="id" class="btn btn-sm btn-primary"
+    <label
+        :for="id"
+        class="btn btn-sm btn-primary"
+        :class="{ 'btn-success': type == 'success', 'btn-disabled': disabled }"
+        v-if="title"
+        >{{ title }}</label
+    >
+    <label
+        :for="id"
+        class="btn btn-sm btn-primary"
+        :class="{ 'btn-disabled': disabled }"
+        v-else
         ><i class="fa-solid fa-keyboard"></i
     ></label>
 
-    <teleport to="body">
+    <teleport :to="location ? location : 'body'">
         <input type="checkbox" :id="id" class="modal-toggle" />
         <div class="modal">
             <div class="modal-box p-8">
@@ -57,11 +68,32 @@
 </template>
 <script>
 export default {
-    props: ["keypadValue", "id", "harga"],
+    props: [
+        "keypadValue",
+        "id",
+        "harga",
+        "min",
+        "max",
+        "title",
+        "type",
+        "location",
+        "disabled",
+    ],
     data() {
         return {
             input: this.keypadValue,
         };
+    },
+    watch: {
+        input(baru) {
+            if (this.min >= 0 && this.max >= 0) {
+                if (baru < this.min) {
+                    this.input = this.min;
+                } else if (baru > this.max) {
+                    this.input = this.max;
+                }
+            }
+        },
     },
     methods: {
         button(data) {

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\transaksi;
 
 use App\Http\Controllers\Controller;
+use App\Models\Member;
+use App\Models\Produk;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
@@ -15,7 +17,15 @@ class PenjualanController extends Controller
      */
     public function index()
     {
-        //
+        $produk = Produk::with(['satuan' => function ($q) {
+            $q->select('id', 'nama');
+        }])->get(['kode', 'nama', 'harga_jual', 'satuan_id', 'stok']);
+
+        $member = Member::all();
+        return inertia()->render('transaksi/penjualan', [
+            'produk' => $produk,
+            'member' => $member,
+        ]);
     }
 
     /**

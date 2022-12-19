@@ -15,7 +15,7 @@
             :href="user_aktif.perusahaan.logo"
         />
     </Head>
-    <div class="min-h-screen overflow-hidden relative">
+    <div class="min-h-screen overflow-hidden relative bg-base-100">
         <div class="absolute z-10 right-0 p-2">
             <transition-group class="stack" name="notif" tag="div">
                 <div
@@ -74,12 +74,22 @@
                         class="btn btn-ghost drawer-button lg:hidden"
                         ><i class="fa-solid fa-bars"></i
                     ></label>
-                    <label class="swap swap-rotate">
-                        <!-- this hidden checkbox controls the state -->
-                        <input type="checkbox" v-model="form.theme" />
-                        <i class="swap-off text-2xl fa-regular fa-moon"></i>
-                        <i class="swap-on fa-regular text-2xl fa-sun"></i>
-                    </label>
+                    <div class="flex gap-2">
+                        <label class="swap swap-rotate">
+                            <!-- this hidden checkbox controls the state -->
+                            <input type="checkbox" v-model="form.theme" />
+                            <i class="swap-off text-2xl fa-regular fa-moon"></i>
+                            <i class="swap-on fa-regular text-2xl fa-sun"></i>
+                        </label>
+                        <label
+                            class="swap swap-rotate btn btn-ghost btn-sm text-xl"
+                        >
+                            <!-- this hidden checkbox controls the state -->
+                            <input type="checkbox" hidden v-model="maxScreen" />
+                            <i class="fa fa-maximize swap-off"></i>
+                            <i class="fa fa-minimize swap-on"></i>
+                        </label>
+                    </div>
                 </div>
                 <div
                     class="p-5 pt-[4rem] overflow-x-hidden scrollbar-thin scrollbar-thumb-primary scrollbar-track-gray-100"
@@ -153,6 +163,7 @@ export default {
     data() {
         return {
             sidebar: false,
+            maxScreen: false,
         };
     },
     watch: {
@@ -161,6 +172,28 @@ export default {
             document.getElementById("theme").dataset.theme = old_data
                 ? "winter"
                 : "night";
+        },
+        maxScreen(data) {
+            var elem = document.getElementById("body");
+            if (data) {
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) {
+                    /* Safari */
+                    elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) {
+                    /* IE11 */
+                    elem.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
         },
     },
     components: {

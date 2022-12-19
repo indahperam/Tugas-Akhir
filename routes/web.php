@@ -11,6 +11,7 @@ use App\Http\Controllers\pengaturan\ProfilController;
 use App\Http\Controllers\pengaturan\UsersController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\transaksi\PengeluaranController;
+use App\Http\Controllers\transaksi\PenjualanController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -55,6 +56,7 @@ Route::middleware('auth')->group(function () {
     //transaksi
     Route::prefix('transaksi')->group(function () {
         Route::resource('pengeluaran', PengeluaranController::class);
+        Route::resource('penjualan', PenjualanController::class);
     });
     // pengaturan 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
