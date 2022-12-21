@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('pembayarans', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('transaksi_id')->references('id')->on('transaksis')->onDelete('cascade');
+            $table->string('tipe');
+            $table->string('no_transaksi')->nullable();
+            $table->bigInteger('nominal');
             $table->timestamps();
         });
     }

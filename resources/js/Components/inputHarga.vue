@@ -18,6 +18,7 @@
                 :key="inputValue"
                 :id="Math.random().toString(36)"
                 harga="true"
+                :location="location ? location : false"
             ></input-keypad>
         </div>
         <transition name="list">
@@ -29,7 +30,7 @@
 </template>
 <script>
 export default {
-    props: ["inputValue", "error", "title"],
+    props: ["inputValue", "error", "title", "location"],
     data() {
         return {
             keypad: this.inputValue,

@@ -15,6 +15,12 @@ return new class extends Migration
     {
         Schema::create('transaksi_details', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('transaksi_id')->references('id')->on('transaksis')->onDelete('cascade');
+            $table->string('kode');
+            $table->string('nama');
+            $table->string('harga_jual');
+            $table->string('jumlah');
+            $table->string('subtotal');
             $table->timestamps();
         });
     }

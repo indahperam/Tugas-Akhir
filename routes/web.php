@@ -10,8 +10,10 @@ use App\Http\Controllers\pengaturan\PerusahaanController;
 use App\Http\Controllers\pengaturan\ProfilController;
 use App\Http\Controllers\pengaturan\UsersController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\transaksi\HutangController;
 use App\Http\Controllers\transaksi\PengeluaranController;
 use App\Http\Controllers\transaksi\PenjualanController;
+use App\Http\Controllers\transaksi\TransaksiController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -57,6 +59,11 @@ Route::middleware('auth')->group(function () {
     Route::prefix('transaksi')->group(function () {
         Route::resource('pengeluaran', PengeluaranController::class);
         Route::resource('penjualan', PenjualanController::class);
+        Route::post('simpan', [TransaksiController::class, 'simpan_transaksi'])->name('transaksi.simpan');
+        Route::post('simpan/hutang', [TransaksiController::class, 'hutang_transaksi'])->name('transaksi.hutang');
+        Route::post('save', [TransaksiController::class, 'save_transaksi'])->name('transaksi.save');
+        Route::delete('hapus/{transaksi}', [TransaksiController::class, 'hapus_transaksi'])->name('transaksi.hapus');
+        Route::apiResource('hutang', HutangController::class);
     });
     // pengaturan 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -68,4 +75,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/theme', [ProfileController::class, 'theme'])->name('theme');
 });
 
+Route::get('print/lunas', [TransaksiController::class, 'print_lunas'])->name('print_lunas');
 require __DIR__ . '/auth.php';

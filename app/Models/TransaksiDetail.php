@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class TransaksiDetail extends Model
 {
     use HasFactory;
+    protected $guarded = ['id'];
+
+    public function produk()
+    {
+        return $this->belongsTo(Produk::class, 'kode', 'kode');
+    }
 }

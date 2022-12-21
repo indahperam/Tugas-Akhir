@@ -149,12 +149,18 @@
             <div :class="{ hidden: sidebar }" class="truncate">Pembelian</div>
         </a>
     </li>
-    <li>
-        <a>
-            <i class="fa-solid fa-money-bill"></i>
-            <div :class="{ hidden: sidebar }" class="truncate">Hutang</div>
-        </a>
-    </li>
+    <Link :href="route('hutang.index')">
+        <li>
+            <a
+                :class="{
+                    active: $page.component == 'transaksi/hutang',
+                }"
+            >
+                <i class="fa-solid fa-money-bill"></i>
+                <div :class="{ hidden: sidebar }" class="truncate">Hutang</div>
+            </a>
+        </li>
+    </Link>
     <li class="menu-title mt-4" :class="{ hidden: sidebar }">
         <span class="label-text truncate">Pengaturan</span>
     </li>

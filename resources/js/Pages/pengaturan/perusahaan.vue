@@ -81,6 +81,22 @@
                 </div>
                 <div class="form-control">
                     <label class="label">
+                        <span class="label-text">Kontak</span>
+                    </label>
+                    <input
+                        type="text"
+                        class="input input-sm input-bordered"
+                        placeholder="email : johndoe@gmail.com"
+                        v-model="form.kontak"
+                    />
+                    <label class="label" v-if="form.errors.ppn">
+                        <span class="label-text-alt text-error">{{
+                            form.errors.ppn
+                        }}</span>
+                    </label>
+                </div>
+                <div class="form-control">
+                    <label class="label">
                         <span class="label-text">PPN</span>
                     </label>
                     <input
@@ -104,7 +120,7 @@
                     <input
                         type="text"
                         class="input input-sm input-bordered"
-                        placeholder="Alamat Perusahaan"
+                        placeholder="ex : cek sebelum membeli barang"
                         v-model="form.tambahan"
                     />
                     <label class="label" v-if="form.errors.tambahan">

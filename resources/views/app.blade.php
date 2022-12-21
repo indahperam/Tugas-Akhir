@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="night" id="theme">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="winter" id="theme">
 
 <head>
     <meta charset="utf-8">

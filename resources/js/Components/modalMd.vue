@@ -1,7 +1,7 @@
 <template lang="">
-    <teleport to="body">
+    <teleport :to="location ? location : 'body'">
         <input type="checkbox" :id="id" class="modal-toggle" />
-        <div class="modal">
+        <div class="modal z-40">
             <div
                 class="modal-box scrollbar-thin scrollbar-thumb-primary scrollbar-track-gray-100"
             >
@@ -23,6 +23,7 @@
 export default {
     props: {
         id: String,
+        location: String,
     },
 };
 </script>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\transaksi;
 
 use App\Http\Controllers\Controller;
+use App\Models\JenisPembayaran;
 use App\Models\Member;
 use App\Models\Produk;
 use App\Models\Transaksi;
@@ -22,9 +23,19 @@ class PenjualanController extends Controller
         }])->get(['kode', 'nama', 'harga_jual', 'satuan_id', 'stok']);
 
         $member = Member::all();
+        $jenis_pembayaran = JenisPembayaran::all();
+        $transaksi_aktif = Transaksi::with(['transaksi_detail.produk.satuan', 'member'])->where('active', true)->latest()->get()->map(function ($q) {
+            $q['waktu'] = $q->created_at->format('d M Y H:i');
+            $q['transaksi_detail']->map(function ($detail) {
+                $detail['stok'] = $detail->produk['stok'];
+            });
+            return $q;
+        });
         return inertia()->render('transaksi/penjualan', [
             'produk' => $produk,
             'member' => $member,
+            'jenis_pembayaran' => $jenis_pembayaran,
+            'transaksi_aktif' => $transaksi_aktif,
         ]);
     }
 

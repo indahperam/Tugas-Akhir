@@ -17,7 +17,7 @@
 
     <teleport :to="location ? location : 'body'">
         <input type="checkbox" :id="id" class="modal-toggle" />
-        <div class="modal">
+        <div class="modal z-50">
             <div class="modal-box p-8">
                 <div class="card shadow-lg">
                     <div class="card-body items-center">

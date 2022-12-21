@@ -15,6 +15,16 @@ return new class extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
+            $table->string('kode')->nullable();
+            $table->bigInteger('member_id');
+            $table->bigInteger('total');
+            $table->bigInteger('diskon');
+            $table->bigInteger('diskon_total');
+            $table->bigInteger('ppn');
+            $table->bigInteger('ppn_total');
+            $table->bigInteger('grand_total');
+            $table->string('lunas');
+            $table->boolean('active');
             $table->timestamps();
         });
     }

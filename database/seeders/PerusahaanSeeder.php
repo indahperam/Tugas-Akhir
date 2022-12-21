@@ -17,7 +17,7 @@ class PerusahaanSeeder extends Seeder
     {
         Perusahaan::create([
             'nama' => 'Koba POS',
-            'alamat' => '12312313',
+            'alamat' => 'Simpang III Sipin, Kota Jambi, Jambi',
         ]);
     }
 }
