@@ -3,7 +3,7 @@
         <div class="card-body">
             <div class="flex justify-between">
                 <div class="card-title mb-4">Menu Penjualan</div>
-                <label class="swap swap-rotate btn btn-ghost btn-sm text-xl">
+                <label class="swap swap-rotate btn btn-ghost btn-sm text-xl hidden">
                     <!-- this hidden checkbox controls the state -->
                     <input type="checkbox" hidden v-model="maxScreen" />
                     <i class="fa fa-maximize swap-off"></i>
@@ -14,74 +14,29 @@
                 <table class="table table-compact w-max z-0">
                     <tbody>
                         <tr>
-                            <th class="min-w-[7rem] uppercase">member</th>
+                            <th class="min-w-[7rem] uppercase">supplier</th>
                             <td class="flex gap-4 items-center">
                                 <input-pick
-                                    :dataPick="dataMember"
-                                    v-model:dataSelect="addMember"
+                                    :dataPick="dataSupplier"
+                                    v-model:dataSelect="addSupplier"
                                     member="true"
                                 ></input-pick>
-                                <button class="btn btn-xs" @click="resetMember">
-                                    non-member
-                                </button>
                             </td>
                         </tr>
                         <tr>
                             <th class="min-w-[7rem] uppercase">Nama</th>
-                            <td>{{ tambah.member.nama }}</td>
+                            <td>{{ tambah.supplier.nama }}</td>
                         </tr>
                         <tr>
                             <th class="min-w-[7rem] uppercase">Alamat</th>
-                            <td>{{ tambah.member.alamat }}</td>
+                            <td>{{ tambah.supplier.alamat }}</td>
                         </tr>
                         <tr>
                             <th class="min-w-[7rem] uppercase">kontak</th>
-                            <td>{{ tambah.member.kontak }}</td>
+                            <td>{{ tambah.supplier.kontak }}</td>
                         </tr>
                     </tbody>
                 </table>
-                <div class="w-[24rem] h-max max-h-[10rem] card shadow-lg">
-                    <div
-                        class="m-4 relative overflow-y-auto scrollbar-thin scrollbar-track-base-200 scrollbar-thumb-primary"
-                    >
-                        <div class="sticky top-0 bg-base-100 py-2">
-                            Transaksi Aktif
-                        </div>
-                        <ul
-                            class="flex gap-5 mt-1"
-                            v-for="(item, index) in transaksi_aktif"
-                            :key="item.kode"
-                            v-if="transaksi_aktif.length > 0"
-                        >
-                            <li class="flex items-center gap-4">
-                                <div class="bg-success p-1 rounded-full"></div>
-                                {{ item.kode }}
-                            </li>
-                            <li class="flex items-center gap-4">
-                                {{ item.waktu }}
-                            </li>
-                            <li class="flex items-center gap-1">
-                                <label
-                                    @click="moveTransaksi(item)"
-                                    for="selectTransaksi"
-                                    class="btn btn-success btn-xs"
-                                >
-                                    <i class="fa fa-pen"></i>
-                                </label>
-                                <label
-                                    @click="removeTransaksi(item)"
-                                    for="hapusTransaksi"
-                                    class="btn btn-error btn-xs"
-                                >
-                                    <i class="fa fa-trash"></i
-                                ></label>
-                            </li>
-                        </ul>
-                        <ul v-else class="text-center">
-                            belum ada data
-                        </ul>
-                    </div>
-                </div>
             </div>
             <div class="flex justify-between">
                 <div class="flex items-center gap-4 z-10">
@@ -89,6 +44,7 @@
                     <input-pick
                         :dataPick="produk"
                         v-model:dataSelect="addProduk"
+                        supplier="true"
                     ></input-pick>
                 </div>
                 <div class="" v-if="tambah.id != 0">
@@ -103,7 +59,6 @@
                             <td>no</td>
                             <td>Nama</td>
                             <td>Harga</td>
-                            <td class="text-center">Stok</td>
                             <td class="text-center">Jumlah</td>
                             <td class="text-right">subtotal</td>
                         </tr>
@@ -126,8 +81,7 @@
                                 </td>
                                 <td>{{ item.kode }}</td>
                                 <td>{{ item.nama }}</td>
-                                <td>{{ rupiah(item.harga_jual) }}</td>
-                                <td class="text-center">{{ item.stok }}</td>
+                                <td>{{ rupiah(item.harga_beli) }}</td>
                                 <td
                                     class="flex justify-center select-none gap-3 items-center"
                                 >
@@ -250,32 +204,12 @@
                             <td colspan="2" class="w-[10rem] px-4">
                                 <div class="flex justify-between gap-4">
                                     <label
-                                        :class="{
-                                            'btn-disabled':
-                                                tambah.keranjang.length < 1,
-                                        }"
-                                        for="bayar"
-                                        class="btn btn-success btn-sm w-max"
-                                        >Bayar
-                                    </label>
-                                    <label
-                                        for=""
-                                        class="btn btn-secondary btn-sm w-max"
-                                        v-if="tambah.member.id != 0"
-                                        :class="{
-                                            'btn-disabled':
-                                                tambah.keranjang.length < 1,
-                                        }"
-                                        @click="hutang"
-                                        >hutang</label
-                                    >
-                                    <label
                                         for=""
                                         @click="simpan"
                                         :class="{
                                             'btn-disabled':
                                                 tambah.keranjang.length < 1 ||
-                                                tambah.id != 0,
+                                                tambah.supplier.id == 0,
                                         }"
                                         class="btn btn-primary btn-sm w-max"
                                         >simpan</label
@@ -294,77 +228,6 @@
             </div>
         </div>
     </div>
-    <modal-md id="bayar" :location="maxScreen ? '#screen' : ''">
-        <template v-slot:title>Metode Pembayaran</template>
-        <template v-slot:content>
-            <input-select
-                title="Metode Pembayaran"
-                :dataSelect="jenis_pembayaran"
-                v-model:inputValue="tambah.bayar.jenis"
-                label="jenis"
-            ></input-select>
-            <input-text
-                v-if="!tambah.bayar.jenis.toLowerCase().includes('tunai')"
-                title="No Transaksi"
-                v-model:inputValue="tambah.bayar.no_transaksi"
-            ></input-text>
-            <div class="flex flex-col gap-4">
-                <input-harga
-                    v-model:inputValue="tambah.bayar.final"
-                    :disabled="tambah.keranjang.length < 1"
-                    :location="maxScreen ? '#screen' : false"
-                    title="Bayar"
-                ></input-harga>
-            </div>
-            <div class="grid grid-cols-4 py-4 gap-4">
-                <button
-                    class="btn btn-sm btn-outline"
-                    @click="tambah.bayar.final = tambah.grand_total"
-                >
-                    uang pas
-                </button>
-                <button
-                    class="btn btn-sm btn-outline"
-                    @click="tambah.bayar.final = 100000"
-                >
-                    Rp 100.000
-                </button>
-                <button
-                    class="btn btn-sm btn-outline"
-                    @click="tambah.bayar.final = 50000"
-                >
-                    Rp 50.000
-                </button>
-                <button
-                    class="btn btn-sm btn-outline"
-                    @click="tambah.bayar.final = 20000"
-                >
-                    Rp 20.000
-                </button>
-                <button
-                    class="btn btn-sm btn-outline"
-                    @click="tambah.bayar.final = 10000"
-                >
-                    Rp 10.000
-                </button>
-                <button
-                    class="btn btn-sm btn-outline"
-                    @click="tambah.bayar.final = 5000"
-                >
-                    Rp 5.000
-                </button>
-            </div>
-        </template>
-        <template v-slot:action
-            ><button
-                class="btn btn-success"
-                :class="{ 'loading btn-disabled': tambah.processing }"
-                @click="submitTransaksi"
-            >
-                Submit
-            </button></template
-        >
-    </modal-md>
 </template>
 <script>
 import LayoutMain from "@/Layouts/LayoutMain.vue";
@@ -372,13 +235,11 @@ import { useForm } from "@inertiajs/inertia-vue3";
 
 export default {
     layout: LayoutMain,
-    props: [
-        "produk",
-        "user_aktif",
-        "member",
-        "jenis_pembayaran",
-        "transaksi_aktif",
-    ],
+    props: {
+        supplier: Array,
+        produk: Array,
+        user_aktif: Object,
+    },
     setup(props) {
         const tambah = useForm({
             id: 0,
@@ -390,9 +251,9 @@ export default {
                 dummy: 0,
                 final: 0,
             },
-            member: {
+            supplier: {
                 id: 0,
-                nama: "non-member",
+                nama: "-",
                 alamat: "-",
                 kontak: "-",
             },
@@ -414,24 +275,14 @@ export default {
         return {
             maxScreen: false,
             addProduk: null,
-            addMember: null,
-            dataMember: this.member,
+            addSupplier: null,
+            dataSupplier: this.supplier,
             click_check: false,
             looping_state: null,
             debounce_time: null,
         };
     },
     watch: {
-        addMember: {
-            handler: function (data) {
-                if (data != null) {
-                    this.tambah.member.id = data.id;
-                    this.tambah.member.nama = data.nama;
-                    this.tambah.member.alamat = data.alamat;
-                    this.tambah.member.kontak = data.kontak;
-                }
-            },
-        },
         "tambah.diskon.dummy": {
             handler: function (baru) {
                 this.tambah.diskon.final = this.tambah.total * (baru / 100);
@@ -442,6 +293,16 @@ export default {
                 this.master_hitung();
             },
         },
+        addSupplier: {
+            handler: function (data) {
+                if (data != null) {
+                    this.tambah.supplier.id = data.id;
+                    this.tambah.supplier.nama = data.nama;
+                    this.tambah.supplier.alamat = data.alamat;
+                    this.tambah.supplier.kontak = data.kontak;
+                }
+            },
+        },
         addProduk: {
             handler: function (baru) {
                 if (baru != null) {
@@ -449,144 +310,18 @@ export default {
                 }
             },
         },
-        maxScreen(data) {
-            var elem = document.getElementById("screen");
-            if (data) {
-                if (elem.requestFullscreen) {
-                    elem.requestFullscreen();
-                } else if (elem.webkitRequestFullscreen) {
-                    /* Safari */
-                    elem.webkitRequestFullscreen();
-                } else if (elem.msRequestFullscreen) {
-                    /* IE11 */
-                    elem.msRequestFullscreen();
-                }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                }
-            }
-        },
     },
     methods: {
-        removeTransaksi(data) {
-            this.$inertia.delete(
-                route("transaksi.hapus", {
-                    transaksi: data.id,
-                }),
-                {
-                    onSuccess: () => {
-                        this.$swal({
-                            icon: "success",
-                            text: "Transaksi berhasil di hapus",
-                        });
-                    },
-                }
-            );
-        },
-        moveTransaksi(data) {
-            var produk = JSON.parse(JSON.stringify(data.transaksi_detail));
-            this.tambah.id = data.id;
-            this.tambah.kode = data.kode;
-            this.tambah.keranjang = produk;
-            this.tambah.total = data.total;
-            this.tambah.diskon.type = "%";
-            this.tambah.diskon.dummy = data.diskon;
-            this.tambah.diskon.final = data.diskon_total;
-            this.tambah.ppn = data.ppn;
-            this.tambah.ppn_total = data.ppn_total;
-            this.tambah.grand_total = data.grand_total;
-            if (data.member_id == 0) {
-                this.tambah.member.id = 0;
-                this.tambah.member.nama = "non-member";
-                this.tambah.member.alamat = "-";
-                this.tambah.member.kontak = "-";
-            } else {
-                this.tambah.member.id = data.member.id;
-                this.tambah.member.nama = data.member.nama;
-                this.tambah.member.alamat = data.member.alamat;
-                this.tambah.member.kontak = data.member.kontak;
-            }
-        },
-        hutang() {
-            this.tambah.post(route("transaksi.hutang"), {
-                onSuccess: async () => {
-                    this.tambah.reset();
-                    this.$swal({
-                        icon: "success",
-                        text: "Hutang Berhasil di simpan",
-                    });
-                },
-            });
-        },
         simpan() {
-            this.tambah.post(route("transaksi.save"), {
+            this.tambah.post(route('pembelian.store'), {
                 onSuccess: () => {
                     this.tambah.reset();
                     this.$swal({
                         icon: "success",
                         text: "Transaksi Berhasil di simpan",
                     });
-                },
-            });
-        },
-        async removeProduk(kode) {
-            await this.tambah.keranjang.find((item, index) => {
-                if (item.kode === kode) {
-                    this.tambah.keranjang.splice(index, 1);
-                    return item;
                 }
-            });
-            await this.master_hitung();
-        },
-        async print_invoice() {
-            var print = await window.open(route("print_lunas"));
-            await print.addEventListener("DOMContentLoaded", () => {
-                print.window.print();
-                print.window.onafterprint = (event) => {
-                    print.close();
-                };
-            });
-        },
-        submitTransaksi() {
-            if (this.tambah.bayar.final < this.tambah.grand_total) {
-                this.modal_close("bayar");
-                this.$swal({
-                    target: "#screen",
-                    icon: "error",
-                    title: "Proses Gagal",
-                    text: "Pembayaran tidak sesuai, uang diterima harus lebih atau sama dengan pembayaran",
-                });
-            } else {
-                this.tambah.post(route("transaksi.simpan"), {
-                    onSuccess: async (data) => {
-                        this.modal_close("bayar");
-                        await this.$swal({
-                            target: "#screen",
-                            icon: "success",
-                            title: `Kembalian ${this.rupiah(
-                                this.tambah.bayar.final -
-                                    this.tambah.grand_total
-                            )}`,
-                            text: "Transaksi Berhasil",
-                        });
-                        this.print_invoice();
-                        this.tambah.reset();
-                    },
-                });
-            }
-        },
-        resetMember() {
-            this.tambah.member = {
-                id: 0,
-                nama: "non-member",
-                alamat: "-",
-                kontak: "-",
-            };
+            })
         },
         addStok(data) {
             clearTimeout(this.debounce_time);
@@ -628,25 +363,18 @@ export default {
                 }
             });
             if (keranjang) {
-                if (keranjang.stok >= 1) {
-                    keranjang.stok -= 1;
-                    keranjang.jumlah = parseInt(keranjang.jumlah) + 1;
-                    keranjang.subtotal =
-                        keranjang.jumlah * keranjang.harga_jual;
-                } else {
-                    this.$swal({
-                        icon: "warning",
-                        text: "Pesanan telah mencapai batas stok tersedia.",
-                    });
-                }
+                keranjang.jumlah = parseInt(keranjang.jumlah) + 1;
+                keranjang.subtotal =
+                    keranjang.jumlah * keranjang.harga_beli;
+
             } else {
                 var produk = {
                     kode: baru.kode,
                     nama: baru.nama,
-                    harga_jual: baru.harga_jual,
+                    harga_beli: baru.harga_beli,
                     jumlah: 1,
                     stok: baru.stok - 1,
-                    subtotal: baru.harga_jual,
+                    subtotal: baru.harga_beli,
                 };
                 this.tambah.keranjang.push(produk);
             }
@@ -665,11 +393,11 @@ export default {
                     keranjang.stok += 1;
                     keranjang.jumlah -= 1;
                     keranjang.subtotal =
-                        keranjang.jumlah * keranjang.harga_jual;
+                        keranjang.jumlah * keranjang.harga_beli;
                 } else {
                     this.$swal({
                         icon: "warning",
-                        text: "Minimal Pemesanan Produk berjumlah 1.",
+                        text: "Minimal Pembelian Produk berjumlah 1.",
                     });
                 }
             }
@@ -701,7 +429,7 @@ export default {
                 this.tambah.diskon.final +
                 this.tambah.ppn_total;
         },
-    },
+    }
 };
 </script>
 <style lang=""></style>

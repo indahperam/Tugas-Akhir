@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\transaksi;
 
 use App\Http\Controllers\Controller;
-use App\Models\JenisPembayaran;
-use App\Models\Transaksi;
+use App\Models\Pembelian;
 use Illuminate\Http\Request;
 
-class HutangController extends Controller
+class DataPembelian extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,30 +19,20 @@ class HutangController extends Controller
         $page = $request->showItem ?: 5;
         $dari = $request->dari ? date('Y-m-d H:i:s', strtotime($request->dari)) : date('Y-m-d H:i:s', strtotime(date('Y-m-d')));
         $sampai = $request->sampai ? date('Y-m-d H:i:s', strtotime('+23 hours', strtotime($request->sampai))) : date('Y-m-d H:i:s', strtotime('+23 hours', strtotime($dari)));
-        $hutang = Transaksi::with([
-            'pembayaran' => function ($q) {
-                $q->selectRaw('*,date_format(created_at,"%d %M %Y %H:%i") as waktu');
-            },
-            'member',
-            'transaksi_detail'
-        ])
-            ->selectRaw('*,date_format(created_at,"%d %M %Y") as tanggal')
-            ->where('lunas', 'belum lunas')
+        $pembelian = Pembelian::with(['pembelian_detail', 'supplier'])
+            ->selectRaw('*,date_format(created_at,"%d %M %Y %H:%i") as tanggal')
             ->whereBetween('created_at', [$dari, $sampai])
             ->where(function ($q) use ($cari) {
                 $q->where('kode', 'like', '%' . $cari . '%')
                     ->orWhere('grand_total', 'like', '%' . $cari . '%')
-                    ->orWhereHas('member', function ($member) use ($cari) {
-                        $member->where('nama', 'like', '%' . $cari . '%');
+                    ->orWhereHas('supplier', function ($supplier) use ($cari) {
+                        $supplier->where('nama', 'like', '%' . $cari . '%');
                     });
             })
-            ->withSum('pembayaran', 'nominal')
-            ->latest()
             ->paginate($page)
             ->withQueryString();
-        return inertia()->render('transaksi/hutang', [
-            'hutang' => $hutang,
-            'jenis_pembayaran' => JenisPembayaran::all(),
+        return inertia()->render('transaksi/data_pembelian', [
+            'pembelian' => $pembelian,
             'search' => $cari,
             'showItem' => $page,
             'dari' => date('Y-m-d', strtotime($dari)),
@@ -68,12 +57,9 @@ class HutangController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Transaksi $hutang)
+    public function show(Pembelian $pembelian)
     {
-        $hutang->load(['member', 'pembayaran', 'transaksi_detail']);
-        $hutang->bayar = $hutang->pembayaran->sum('nominal');
-        $hutang->tanggal_print = date('d M Y');
-        return inertia()->render('print/printHutang', ['transaksi' => $hutang]);
+        return inertia()->render('print/printPembelian');
     }
 
     /**
@@ -83,18 +69,9 @@ class HutangController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transaksi $hutang)
+    public function update(Request $request, $id)
     {
-        $final = [
-            'tipe' => $request->bayar_hutang['jenis'],
-            'no_transaksi' => $request->bayar_hutang['no_transaksi'],
-            'nominal' => $request->bayar_hutang['final'],
-        ];
-        $hutang->pembayaran()->create($final);
-        if ($hutang->pembayaran()->sum('nominal') >= $request->grand_total) {
-            $hutang->lunas = 'lunas';
-            $hutang->update();
-        }
+        //
     }
 
     /**

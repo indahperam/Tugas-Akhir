@@ -143,12 +143,20 @@
             </a>
         </li>
     </Link>
-    <li>
-        <a>
-            <i class="fa-solid fa-truck"></i>
-            <div :class="{ hidden: sidebar }" class="truncate">Pembelian</div>
-        </a>
-    </li>
+    <Link :href="route('data.penjualan.index')">
+        <li>
+            <a
+                :class="{
+                    active: $page.component == 'transaksi/data_penjualan',
+                }"
+            >
+                <i class="fa-solid fa-file-circle-check"></i>
+                <div :class="{ hidden: sidebar }" class="truncate">
+                    Data Penjualan
+                </div>
+            </a>
+        </li>
+    </Link>
     <Link :href="route('hutang.index')">
         <li>
             <a
@@ -158,6 +166,34 @@
             >
                 <i class="fa-solid fa-money-bill"></i>
                 <div :class="{ hidden: sidebar }" class="truncate">Hutang</div>
+            </a>
+        </li>
+    </Link>
+    <Link :href="route('pembelian.index')">
+        <li>
+            <a
+                :class="{
+                    active: $page.component == 'transaksi/pembelian',
+                }"
+            >
+                <i class="fa-solid fa-truck"></i>
+                <div :class="{ hidden: sidebar }" class="truncate">
+                    Pembelian
+                </div>
+            </a>
+        </li>
+    </Link>
+    <Link :href="route('data.pembelian.index')">
+        <li>
+            <a
+                :class="{
+                    active: $page.component == 'transaksi/data_pembelian',
+                }"
+            >
+            <i class="fa-regular fa-paste"></i>
+            <div :class="{ hidden: sidebar }" class="truncate">
+                Data Pembelian
+            </div>
             </a>
         </li>
     </Link>

@@ -36,7 +36,8 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request)
     {
         $user = auth()->user();
-        $perusahaan = $user ? ($user->perusahaan() ? $user->perusahaan()->first() : null) : null;
+        $perusahaan = $user ? ($user->perusahaan = $user->perusahaan()) : null;
+        $perusahaan = $perusahaan ? ($user->perusahaan ? $user->perusahaan : null) : null;
         if ($perusahaan) {
             $perusahaan->logo = url($perusahaan->logo);
         }

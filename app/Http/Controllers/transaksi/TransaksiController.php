@@ -62,22 +62,25 @@ class TransaksiController extends Controller
             });
             $transaksi->transaksi_detail()->delete();
             $transaksi->update();
+
+            // transaksi detail 
             $detail = collect($request->keranjang)->map(function ($q) use ($transaksi) {
                 Produk::where('kode', $q['kode'])->update([
                     'stok' => $q['stok']
                 ]);
                 unset($q['produk']);
                 unset($q['stok']);
-                $q['transaksi_id'] = $transaksi->id;
                 return $q;
             })->toArray();
-            TransaksiDetail::insert($detail);
-            Pembayaran::create([
-                'transaksi_id' => $transaksi->id,
+            $transaksi->transaksi_detail()->createMany($detail);
+
+            // pembayaran
+            $pembayaran = [
                 'tipe' => $request->bayar['jenis'],
                 'no_transaksi' => $request->bayar['no_transaksi'],
                 'nominal' => $request->bayar['final'],
-            ]);
+            ];
+            $transaksi->pembayaran()->create($pembayaran);
         }
     }
 
@@ -93,31 +96,59 @@ class TransaksiController extends Controller
                 'ppn_total' => $request->ppn_total,
                 'grand_total' => $request->grand_total,
                 'active' => false,
-                'lunas' => 'hutang'
+                'lunas' => 'belum lunas'
             ];
-            $transaksi = Transaksi::create($final);
-            $transaksi->kode = "TR-" . sprintf("%05s", $transaksi->id);
-            $transaksi->update();
+            $transaksi = null;
+            // $transaksi = Transaksi::create($final);
+            // $transaksi->kode = "TR-" . sprintf("%05s", $transaksi->id);
+            // $transaksi->update();
             $detail = collect($request->keranjang)->map(function ($q) use ($transaksi) {
                 Produk::where('kode', $q['kode'])->update([
                     'stok' => $q['stok']
                 ]);
                 unset($q['stok']);
+                dd($q, 1);
                 $q['transaksi_id'] = $transaksi->id;
                 return $q;
             })->toArray();
             TransaksiDetail::insert($detail);
-            Pembayaran::create([
-                'transaksi_id' => $transaksi->id,
-                'tipe' => $request->bayar['jenis'],
-                'no_transaksi' => $request->bayar['no_transaksi'],
-                'nominal' => $request->bayar['final'],
-            ]);
+            // Pembayaran::create([
+            //     'transaksi_id' => $transaksi->id,
+            //     'tipe' => $request->bayar['jenis'],
+            //     'no_transaksi' => $request->bayar['no_transaksi'],
+            //     'nominal' => $request->bayar['final'],
+            // ]);
         } else {
-            Transaksi::find($request->id)->update([
+            $final = [
+                'member_id' => $request->member['id'],
+                'total' => $request->total,
+                'diskon' => $request->diskon['dummy'],
+                'diskon_total' => $request->diskon['final'],
+                'ppn' => $request->ppn,
+                'ppn_total' => $request->ppn_total,
+                'grand_total' => $request->grand_total,
                 'active' => false,
-                'lunas' => 'hutang',
-            ]);
+                'lunas' => 'belum lunas'
+            ];
+            $transaksi = Transaksi::find($request->id);
+            $transaksi_detail = $transaksi->load('transaksi_detail')->transaksi_detail;
+            $transaksi->update($final);
+            $transaksi_detail->map(function ($q) {
+                $produk = Produk::where('kode', $q['kode'])->first();
+                $produk->update([
+                    'stok' => $q->jumlah + $produk->stok
+                ]);
+            });
+            $transaksi->transaksi_detail()->delete();
+            $detail = collect($request->keranjang)->map(function ($q) use ($transaksi) {
+                Produk::where('kode', $q['kode'])->update([
+                    'stok' => $q['stok']
+                ]);
+                unset($q['produk']);
+                unset($q['stok']);
+                return $q;
+            })->toArray();
+            $transaksi->transaksi_detail()->createMany($detail);
         }
     }
     public function save_transaksi(Request $request)
@@ -144,7 +175,7 @@ class TransaksiController extends Controller
             $q['transaksi_id'] = $transaksi->id;
             return $q;
         })->toArray();
-        TransaksiDetail::insert($detail);
+        $transaksi->transaksi_detail()->createMany($detail);
     }
     public function print_lunas()
     {

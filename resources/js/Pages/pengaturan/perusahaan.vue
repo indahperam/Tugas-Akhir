@@ -178,7 +178,7 @@ export default {
         submit() {
             this.form.patch(
                 route("pengaturan.perusahaan.update", {
-                    perusahaan: this.user_aktif.id,
+                    perusahaan: this.user_aktif.perusahaan.id,
                 }),
                 {
                     onSuccess: () => {

@@ -33,7 +33,7 @@
                         <div class="">{{ item.kode }}</div>
                         <div>{{ item.nama }}</div>
                         <div class="">
-                            {{ rupiah(item.harga_jual) }} /
+                            {{ rupiah(supplier?item.harga_beli:item.harga_jual) }} /
                             {{ item.satuan.nama }}
                         </div>
                         <div class="">Stok : {{ item.stok }}</div>
@@ -45,7 +45,7 @@
 </template>
 <script>
 export default {
-    props: ["dataPick", "dataSelect", "member"],
+    props: ["dataPick", "dataSelect", "member", 'supplier'],
     data() {
         return {
             cari: "",

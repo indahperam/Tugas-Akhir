@@ -14,10 +14,13 @@ class Transaksi extends Model
     {
         return $this->belongsTo(Member::class);
     }
+
+
     public function pembayaran()
     {
         return $this->hasMany(Pembayaran::class);
     }
+
     public function transaksi_detail()
     {
         return $this->hasMany(TransaksiDetail::class);

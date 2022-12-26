@@ -10,7 +10,10 @@ use App\Http\Controllers\pengaturan\PerusahaanController;
 use App\Http\Controllers\pengaturan\ProfilController;
 use App\Http\Controllers\pengaturan\UsersController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\transaksi\DataPembelian;
+use App\Http\Controllers\transaksi\DataPenjualanController;
 use App\Http\Controllers\transaksi\HutangController;
+use App\Http\Controllers\transaksi\PembelianController;
 use App\Http\Controllers\transaksi\PengeluaranController;
 use App\Http\Controllers\transaksi\PenjualanController;
 use App\Http\Controllers\transaksi\TransaksiController;
@@ -64,6 +67,11 @@ Route::middleware('auth')->group(function () {
         Route::post('save', [TransaksiController::class, 'save_transaksi'])->name('transaksi.save');
         Route::delete('hapus/{transaksi}', [TransaksiController::class, 'hapus_transaksi'])->name('transaksi.hapus');
         Route::apiResource('hutang', HutangController::class);
+        Route::apiResource('pembelian', PembelianController::class);
+        Route::group(['prefix' => 'data', 'as' => 'data.'], function () {
+            Route::apiResource('penjualan', DataPenjualanController::class);
+            Route::apiResource('pembelian', DataPembelian::class);
+        });
     });
     // pengaturan 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
