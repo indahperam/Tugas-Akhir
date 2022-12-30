@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pembayaran extends Model
+class Closing extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
 
-    public function transaksi()
+    public function user()
     {
-        return $this->belongsTo(Transaksi::class);
+        return $this->belongsTo(User::class);
     }
 }

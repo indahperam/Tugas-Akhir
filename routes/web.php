@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\master\JenisPembayaranController;
 use App\Http\Controllers\master\KategoriController;
 use App\Http\Controllers\master\MemberController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\pengaturan\PerusahaanController;
 use App\Http\Controllers\pengaturan\ProfilController;
 use App\Http\Controllers\pengaturan\UsersController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\transaksi\ClosingController;
 use App\Http\Controllers\transaksi\DataPembelian;
 use App\Http\Controllers\transaksi\DataPenjualanController;
 use App\Http\Controllers\transaksi\HutangController;
@@ -42,12 +44,10 @@ Route::group(['prefix' => 'pengaturan', 'as' => 'pengaturan.', 'middleware' => [
     Route::resource('perusahaan', PerusahaanController::class);
     Route::post('perusahaan/logo', [PerusahaanController::class, 'logo_update'])->name('perusahaan.logo_update');
 });
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified', 'perusahaan'])->name('dashboard');
 
 
 Route::middleware('auth')->group(function () {
+    Route::resource('dashboard', DashboardController::class);
     // master 
     Route::prefix('master')->group(function () {
         Route::resource('satuan', SatuanController::class);
@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function () {
             Route::apiResource('penjualan', DataPenjualanController::class);
             Route::apiResource('pembelian', DataPembelian::class);
         });
+        Route::apiResource('closing', ClosingController::class);
     });
     // pengaturan 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

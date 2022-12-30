@@ -281,12 +281,14 @@ export default {
             var print = await window.open(route("data.pembelian.show", {
                 pembelian: data.id
             }));
-            // await print.addEventListener("DOMContentLoaded", () => {
-            //     print.window.print();
-            //     print.window.onafterprint = (event) => {
-            //         print.close();
-            //     };
-            // });
+            await print.addEventListener("DOMContentLoaded", async () => {
+                setTimeout(() => {
+                    print.window.print();
+                }, 1000);
+                print.window.onafterprint = (event) => {
+                    print.close();
+                };
+            });
         },
         get_pembelian(data) {
             this.form.id = data.id

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\transaksi;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pembelian;
+use App\Models\Closing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
-class DataPembelian extends Controller
+class ClosingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,20 +20,15 @@ class DataPembelian extends Controller
         $page = $request->showItem ?: 5;
         $dari = $request->dari ? date('Y-m-d H:i:s', strtotime($request->dari)) : date('Y-m-d H:i:s', strtotime(date('Y-m-d')));
         $sampai = $request->sampai ? date('Y-m-d H:i:s', strtotime('+23 hours', strtotime($request->sampai))) : date('Y-m-d H:i:s', strtotime('+23 hours', strtotime($dari)));
-        $pembelian = Pembelian::with(['pembelian_detail', 'supplier'])
-            ->selectRaw('*,date_format(created_at,"%d %M %Y %H:%i") as tanggal')
+
+        $closing = Closing::with(['user'])
+            ->selectRaw('*,date_format(created_at,"%d %M %Y") as tanggal,date_format(created_at,"%H:%i") as waktu_mulai,date_format(updated_at,"%H:%i") as waktu_selesai')
             ->whereBetween('created_at', [$dari, $sampai])
-            ->where(function ($q) use ($cari) {
-                $q->where('kode', 'like', '%' . $cari . '%')
-                    ->orWhere('grand_total', 'like', '%' . $cari . '%')
-                    ->orWhereHas('supplier', function ($supplier) use ($cari) {
-                        $supplier->where('nama', 'like', '%' . $cari . '%');
-                    });
-            })
+            ->where('status', 'close')
             ->paginate($page)
             ->withQueryString();
-        return inertia()->render('transaksi/data_pembelian', [
-            'pembelian' => $pembelian,
+        return inertia()->render('laporan/closing', [
+            'closing' => $closing,
             'search' => $cari,
             'showItem' => $page,
             'dari' => date('Y-m-d', strtotime($dari)),
@@ -48,7 +44,14 @@ class DataPembelian extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'modal_awal' => 'required|integer|min:1'
+        ]);
+        $request['user_id'] = auth()->user()->id;
+        $opening = Closing::create($request->all());
+        $opening->update([
+            'kode' => "CL-" . sprintf("%05s", $opening->id)
+        ]);
     }
 
     /**
@@ -57,11 +60,9 @@ class DataPembelian extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Pembelian $pembelian)
+    public function show(Closing $id)
     {
-        $pembelian->load(['supplier', 'pembelian_detail.produk.satuan']);
-        $pembelian->waktu = $pembelian->created_at->format('d M Y H:i');
-        return inertia()->render('print/printPembelian', ['pembelian' => $pembelian]);
+        dd($id);
     }
 
     /**
@@ -71,9 +72,14 @@ class DataPembelian extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Closing $closing)
     {
-        //
+        $user = auth()->user()->password;
+        $check = Hash::check($request->password, $user);
+        if (!$check) {
+            return back()->withErrors(['password' => 'password tidak sesuai']);
+        }
+        $closing->update($request->all());
     }
 
     /**
@@ -82,8 +88,8 @@ class DataPembelian extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Closing $closing)
     {
-        //
+        $closing->delete();
     }
 }

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\transaksi;
 
 use App\Http\Controllers\Controller;
+use App\Models\Closing;
 use App\Models\JenisPembayaran;
 use App\Models\Member;
+use App\Models\Pembayaran;
+use App\Models\Pengeluaran;
 use App\Models\Produk;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
@@ -31,12 +34,44 @@ class PenjualanController extends Controller
             });
             return $q;
         });
+
+        $closing = Closing::with(['user'])->whereDate('created_at', date('Y-m-d'))->where('status', 'open')->get();
+        $closing_data = $this->updateClosing($closing);
+
         return inertia()->render('transaksi/penjualan', [
             'produk' => $produk,
             'member' => $member,
             'jenis_pembayaran' => $jenis_pembayaran,
             'transaksi_aktif' => $transaksi_aktif,
+            'closing' => $closing->count(),
+            'closing_data' => $closing_data,
         ]);
+    }
+
+    public function updateClosing($data)
+    {
+        if ($data->count() > 0) {
+            $data = $data->first();
+            $data['waktu'] =  $data->created_at->format('d M Y H:i');
+
+            $penjualan = Transaksi::whereDate('created_at', date("Y-m-d"))->where('lunas', 'lunas')->get();
+            $pembayaran = Pembayaran::with(['transaksi'])->whereDate('created_at', date("Y-m-d"))->get();
+            $pengeluaran = Pengeluaran::whereDate('tanggal_input', date("Y-m-d"))->where('jenis_transaksi', 'TUNAI')->get();
+
+            $data->nota_awal = $penjualan->first() ? $penjualan->first()->kode : '';
+            $data->nota_akhir = $penjualan->last() ? $penjualan->last()->kode : '';
+            $data->total_nota = $penjualan->count();
+            $data->cash = $pembayaran->where('tipe', 'TUNAI')->sum('nominal');
+            $data->transfer = $pembayaran->where('tipe', '!=', 'TUNAI')->sum('nominal');
+            $data->gross_sales = $pembayaran->sum('nominal');
+            $data->diskon = $penjualan->sum('diskon_total');
+            $data->ppn = $penjualan->sum('ppn_total');
+            $data->net_sales = $data->gross_sales - $data->ppn;
+            $data->rata_rata = $data->total_nota != 0 ? ($data->net_sales / $data->total_nota) : 0;
+            $data->pengeluaran = $pengeluaran->sum('nominal');
+            $data->selisih = ($data->total_uang_tunai - $data->modal_awal) - $data->pengeluaran;
+        }
+        return $data;
     }
 
     /**

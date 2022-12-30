@@ -5,7 +5,7 @@
                 <div class="card-title capitalize font-bold">
                     Transaksi hari ini
                 </div>
-                <p class="font-semibold">123</p>
+                <p class="font-semibold">{{data_master.transaksi_hari_ini}}</p>
             </div>
         </div>
         <div class="card shadow-lg w-full">
@@ -13,7 +13,7 @@
                 <div class="card-title capitalize font-bold">
                     total Transaksi
                 </div>
-                <p class="font-semibold">123</p>
+                <p class="font-semibold">{{data_master.transaksi_total}}</p>
             </div>
         </div>
         <div class="card shadow-lg w-full">
@@ -21,13 +21,13 @@
                 <div class="card-title capitalize font-bold">
                     jumlah Transaksi
                 </div>
-                <p class="font-semibold">Rp 20.000.000.000</p>
+                <p class="font-semibold">{{rupiah(data_master.jumlah_transaksi)}}</p>
             </div>
         </div>
         <div class="card shadow-lg w-full">
             <div class="card-body flex items-center w-full drop-shadow-lg">
                 <div class="card-title capitalize font-bold">Total hutang</div>
-                <p class="font-semibold">Rp 20.000.000.000</p>
+                <p class="font-semibold">{{rupiah(data_master.hutang)}}</p>
             </div>
         </div>
     </div>
@@ -36,7 +36,9 @@
 import LayoutMain from "@/Layouts/LayoutMain.vue";
 export default {
     layout: LayoutMain,
-    beforeMount() {},
+    props: {
+        'data_master': Object
+    }
 };
 </script>
 <style lang=""></style>

@@ -33,7 +33,6 @@ class PengeluaranController extends Controller
             ->withQueryString();
         return inertia()->render('transaksi/pengeluaran', [
             'pengeluaran' => $pengeluaran,
-            'jenis_pembayaran' => JenisPembayaran::all(),
             'search' => $cari,
             'showItem' => $page,
             'dari' => date('Y-m-d', strtotime($dari)),
@@ -60,11 +59,11 @@ class PengeluaranController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'jenis_transaksi' => 'required',
             'nominal' => 'required|numeric|min:1',
             'keterangan' => 'required',
             'tanggal_input' => 'required',
         ]);
+        $request['jenis_transaksi'] = 'TUNAI';
         $request['tanggal_input'] = date('Y-m-d H:i', strtotime($request->tanggal_input));
         $pengeluaran = Pengeluaran::create($request->all());
         $pengeluaran->kode = "PN-" . sprintf("%05s", $pengeluaran->id);
@@ -103,11 +102,11 @@ class PengeluaranController extends Controller
     public function update(Request $request, Pengeluaran $pengeluaran)
     {
         $request->validate([
-            'jenis_transaksi' => 'required',
             'nominal' => 'required|numeric|min:1',
             'keterangan' => 'required',
             'tanggal_input' => 'required',
         ]);
+        $request['jenis_transaksi'] = 'TUNAI';
         $pengeluaran->update($request->all());
     }
 

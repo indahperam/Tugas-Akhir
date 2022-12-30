@@ -1,5 +1,5 @@
 <template lang="">
-    <Link :href="route('dashboard')">
+    <Link :href="route('dashboard.index')">
         <li
             class="sticky border-b-2 border-base-300 top-0 z-10 py-4 flex justify-center items-center bg-base-200"
             :class="{ hidden: sidebar }"
@@ -41,7 +41,7 @@
     <li class="menu-title mt-4" :class="{ hidden: sidebar }">
         <span class="label-text truncate">Dashboard</span>
     </li>
-    <Link :href="route('dashboard')">
+    <Link :href="route('dashboard.index')">
         <li>
             <a :class="{ active: $page.component == 'Dashboard' }">
                 <i class="fa-solid fa-home"></i>
@@ -194,6 +194,19 @@
             <div :class="{ hidden: sidebar }" class="truncate">
                 Data Pembelian
             </div>
+            </a>
+        </li>
+    </Link>
+    <li class="menu-title mt-4" :class="{ hidden: sidebar }">
+        <span class="label-text truncate">Laporan</span>
+    </li>
+    <Link :href="route('closing.index')">
+        <li>
+            <a :class="{
+                    active: $page.component == 'laporan/closing',
+                }">
+                <i class="fa-solid fa-file-zipper"></i>
+                <div :class="{ hidden: sidebar }" class="truncate">Data Closing</div>
             </a>
         </li>
     </Link>

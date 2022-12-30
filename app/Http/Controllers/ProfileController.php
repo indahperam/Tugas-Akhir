@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use App\Rules\MatchOldPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
@@ -70,7 +71,8 @@ class ProfileController extends Controller
 
     public function theme(Request $request)
     {
-        $user = auth()->user();
+        $user = auth()->user()->id;
+        $user = User::find($user);
         $user->update([
             'theme' => ($request->theme ? 'winter' : 'night')
         ]);

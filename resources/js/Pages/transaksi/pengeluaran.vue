@@ -78,14 +78,7 @@
                 v-model:inputValue="tambah.tanggal_input"
                 :error="tambah.errors.tanggal_input"
             ></input-date>
-            <div class="grid grid-cols-2 gap-2">
-                <input-select
-                    title="Pilih Metode"
-                    :dataSelect="jenis_pembayaran"
-                    label="jenis"
-                    v-model:inputValue="tambah.jenis_transaksi"
-                    :error="tambah.errors.jenis_transaksi"
-                ></input-select>
+            <div class="grid">
                 <input-harga
                     title="Nominal"
                     v-model:inputValue="tambah.nominal"
@@ -117,17 +110,10 @@
                 v-model:inputValue="edit.tanggal_input"
                 :error="edit.errors.tanggal_input"
             ></input-date>
-            <div class="grid grid-cols-2 gap-2">
-                <input-select
-                    title="Pilih Metode"
-                    :dataSelect="jenis_pembayaran"
-                    label="jenis"
-                    v-model:inputValue="edit.jenis_transaksi"
-                    :error="edit.errors.jenis_transaksi"
-                ></input-select>
+            <div class="grid">
                 <input-harga
                     title="Nominal"
-                    v-model:inputValue="edit.nominal"
+                    v-model:inputValue="tambah.nominal"
                     :error="edit.errors.nominal"
                 ></input-harga>
             </div>
@@ -163,7 +149,6 @@ export default {
     layout: LayoutMain,
     props: {
         pengeluaran: Object,
-        jenis_pembayaran: Array,
         search: String,
         showItem: Number,
         dari: String,
@@ -171,7 +156,6 @@ export default {
     },
     setup() {
         const tambah = useForm({
-            jenis_transaksi: null,
             nominal: null,
             keterangan: null,
             tanggal_input: null,
@@ -179,7 +163,6 @@ export default {
         const edit = useForm({
             id: null,
             kode: null,
-            jenis_transaksi: null,
             nominal: null,
             keterangan: null,
             tanggal_input: null,
@@ -242,7 +225,6 @@ export default {
             this.edit.id = data.id;
             this.edit.kode = data.kode;
             this.edit.nominal = data.nominal;
-            this.edit.jenis_transaksi = data.jenis_transaksi;
             this.edit.tanggal_input = data.tanggal_input;
             this.edit.keterangan = data.keterangan;
         },

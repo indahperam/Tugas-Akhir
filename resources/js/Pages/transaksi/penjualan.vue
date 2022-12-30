@@ -1,8 +1,146 @@
 <template lang="">
     <div class="card shadow-lg bg-base-100 z-0" id="screen">
-        <div class="card-body">
+        <div class="card-body" v-if="closing > 0">
+                    <modal-lg id="closing">
+                        <template v-slot:title>detail closing {{closing_data.waktu}}</template>
+                        <template v-slot:content>
+                            <div class="w-full grid grid-cols-2">
+                                <div class="w-full grid grid-cols-2 gap-2 p-2">
+                                    <div class="form-control capitalize">
+                                        <label class="label">
+                                            <span class="label-text">tgl. transaksi</span>
+                                        </label>
+                                        <input type="text" disabled :value="closing_data.waktu" class="input input-bordered">
+                                    </div>
+                                    <div class="form-control capitalize">
+                                        <label class="label">
+                                            <span class="label-text">id closing</span>
+                                        </label>
+                                        <input type="text" disabled :value="closing_data.kode" class="input input-bordered">
+                                    </div>
+                                    <div class="form-control capitalize col-span-2">
+                                        <label class="label">
+                                            <span class="label-text">User</span>
+                                        </label>
+                                        <input type="text" disabled :value="closing_data.user.name" class="input input-bordered">
+                                    </div>
+                                    <div class="form-control capitalize">
+                                        <label class="label">
+                                            <span class="label-text">nota awal</span>
+                                        </label>
+                                        <input type="text" disabled :value="closing_data.nota_awal" class="input input-bordered">
+                                    </div>
+                                    <div class="form-control capitalize">
+                                        <label class="label">
+                                            <span class="label-text">nota akhir</span>
+                                        </label>
+                                        <input type="text" disabled :value="closing_data.nota_akhir" class="input input-bordered">
+                                    </div>
+                                    <div class="form-control capitalize">
+                                        <label class="label">
+                                            <span class="label-text">total nota</span>
+                                        </label>
+                                        <input type="text" disabled :value="closing_data.total_nota" class="input input-bordered">
+                                    </div>
+                                    <div class="form-control capitalize">
+                                        <label class="label">
+                                            <span class="label-text">total nota dihapus</span>
+                                        </label>
+                                        <input type="text" disabled :value="closing_data.total_nota_duhapus" class="input input-bordered">
+                                    </div>
+                                    <div class="form-control capitalize col-span-2">
+                                        <label class="label">
+                                            <span class="label-text">modal awal</span>
+                                        </label>
+                                        <input type="text" disabled :value="rupiah(closing_data.modal_awal)" class="input input-bordered">
+                                    </div>
+                                    <div class="form-control capitalize">
+                                        <label class="label">
+                                            <span class="label-text">Tunai</span>
+                                        </label>
+                                        <input type="text" disabled :value="rupiah(closing_data.cash)" class="input input-bordered">
+                                    </div>
+                                    <div class="form-control capitalize">
+                                        <label class="label">
+                                            <span class="label-text">transfer</span>
+                                        </label>
+                                        <input type="text" disabled :value="rupiah(closing_data.transfer)" class="input input-bordered">
+                                    </div>
+                                </div>
+                                <div class="flex flex-col px-4 py-2 bg-primary rounded-lg">
+                                    <div class="form-control capitalize">
+                                        <label class="label">
+                                            <span class="label-text text-white">Gross Sales</span>
+                                        </label>
+                                        <input type="text" disabled :value="rupiah(closing_data.gross_sales)" class="input input-bordered">
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div class="form-control capitalize">
+                                            <label class="label">
+                                                <span class="label-text text-white">diskon</span>
+                                            </label>
+                                            <input type="text" disabled :value="rupiah(closing_data.diskon)" class="input input-bordered">
+                                        </div>
+                                        <div class="form-control">
+                                            <label class="label">
+                                                <span class="label-text text-white">PPN</span>
+                                            </label>
+                                            <input type="text" disabled :value="rupiah(closing_data.ppn)" class="input input-bordered">
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div class="form-control capitalize">
+                                            <label class="label">
+                                                <span class="label-text text-white">net Sales</span>
+                                            </label>
+                                            <input type="text" disabled :value="rupiah(closing_data.gross_sales)" class="input input-bordered">
+                                        </div>
+                                        <div class="form-control capitalize">
+                                            <label class="label">
+                                                <span class="label-text text-white">avg. sales</span>
+                                            </label>
+                                            <input type="text" disabled :value="rupiah(closing_data.rata_rata)" class="input input-bordered">
+                                        </div>
+                                    </div>
+                                    <div class="form-control">
+                                        <label class="label">
+                                            <span class="label-text text-white">Pengeluaran</span>
+                                        </label>
+                                        <input type="text" disabled :value="rupiah(closing_data.pengeluaran)" class="input input-bordered">
+                                    </div>
+                                    <div class="form-control">
+                                        <label class="label">
+                                            <span class="label-text text-white">Total Uang Tunai : {{rupiah(closing_form.total_uang_tunai)}}</span>
+                                        </label>
+                                        <input type="number" v-model="closing_form.total_uang_tunai" class="input input-bordered">
+                                    </div>
+                                    <div class="form-control">
+                                        <label class="label">
+                                            <span class="label-text text-white">Selisih</span>
+                                        </label>
+                                        <input type="text" disabled :value="rupiah(closing_form.selisih)" class="input input-bordered">
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <template v-slot:action>
+                            <label for="submit_closing" class="btn btn-success">closing</label>
+                            <modal-md id="submit_closing">
+                                <template v-slot:title>Konfirmasi Closing</template>
+                                <template v-slot:content>
+                                    <input-password title="Password" :error="closing_form.errors.password" v-model:inputValue="closing_form.password"></input-password>
+                                </template>
+                                <template v-slot:action><button class="btn btn-success" :class="{'loading btn-disabled' : closing_form.processing}" @click="submit_closing_form">konfirmasi</button></template>
+                            </modal-md>
+                        </template>
+                    </modal-lg>
             <div class="flex justify-between">
-                <div class="card-title mb-4">Menu Penjualan</div>
+                <div class="card-title mb-4">
+                    Menu Penjualan
+                    <label for="closing" class="btn btn-sm btn-warning"
+                        >closing</label
+                    >
+                </div>
                 <label class="swap swap-rotate btn btn-ghost btn-sm text-xl">
                     <!-- this hidden checkbox controls the state -->
                     <input type="checkbox" hidden v-model="maxScreen" />
@@ -293,6 +431,30 @@
                 </table>
             </div>
         </div>
+        <div class="card-body" v-else>
+            <label for="opening" class="btn btn-info">OPEN shift</label>
+            <modal-md id="opening">
+                <template v-slot:content>
+                    <input-harga
+                        v-model:inputValue="opening.modal_awal"
+                        :error="opening.errors.modal_awal"
+                        title="Modal Awal"
+                    >
+                    </input-harga>
+                </template>
+                <template v-slot:action>
+                    <button
+                        @click="submit_opening"
+                        :class="
+                            opening.processing ? 'btn-disabled loading' : ''
+                        "
+                        class="btn btn-success"
+                    >
+                        Opening
+                    </button>
+                </template>
+            </modal-md>
+        </div>
     </div>
     <modal-md id="bayar" :location="maxScreen ? '#screen' : ''">
         <template v-slot:title>Metode Pembayaran</template>
@@ -367,17 +529,22 @@
     </modal-md>
 </template>
 <script>
+import ModalLg from "@/Components/ModalLg.vue";
 import LayoutMain from "@/Layouts/LayoutMain.vue";
 import { useForm } from "@inertiajs/inertia-vue3";
+import inputPassword from './../../Components/inputPassword.vue'
 
 export default {
     layout: LayoutMain,
+    components: { 'modal-lg': ModalLg, 'input-password': inputPassword },
     props: [
         "produk",
         "user_aktif",
         "member",
         "jenis_pembayaran",
         "transaksi_aktif",
+        "closing",
+        "closing_data",
     ],
     setup(props) {
         const tambah = useForm({
@@ -406,8 +573,35 @@ export default {
             },
             status: "active",
         });
+        const opening = useForm({
+            modal_awal: 0,
+        });
+        const closing_form = useForm({
+            id: props.closing_data.id,
+            kode: props.closing_data.kode,
+            user_id: props.closing_data.user_id,
+            nota_awal: props.closing_data.nota_awal,
+            nota_akhir: props.closing_data.nota_akhir,
+            total_nota: props.closing_data.total_nota,
+            total_nota_hapus: props.closing_data.total_nota_hapus,
+            modal_awal: props.closing_data.modal_awal,
+            cash: props.closing_data.cash,
+            transfer: props.closing_data.transfer,
+            gross_sales: props.closing_data.gross_sales,
+            diskon: props.closing_data.diskon,
+            ppn: props.closing_data.ppn,
+            net_sales: props.closing_data.net_sales,
+            rata_rata: props.closing_data.rata_rata,
+            pengeluaran: props.closing_data.pengeluaran,
+            selisih: props.closing_data.selisih,
+            status: 'close',
+            total_uang_tunai: 0,
+            password: '',
+        });
         return {
             tambah,
+            opening,
+            closing_form
         };
     },
     data() {
@@ -422,6 +616,9 @@ export default {
         };
     },
     watch: {
+        'closing_form.total_uang_tunai'(data) {
+            this.closing_form.selisih = this.closing_data.selisih + data
+        },
         addMember: {
             handler: function (data) {
                 if (data != null) {
@@ -473,6 +670,19 @@ export default {
         },
     },
     methods: {
+        submit_closing_form() {
+            this.closing_form.put(route('closing.update', {
+                closing: this.closing_form.id
+            }))
+        },
+        submit_opening() {
+            this.opening.post(route("closing.store"), {
+                onSuccess: () => {
+                    // this.modal_close('closing')
+                    this.notifikasi("success", "shift telah dijalanan!");
+                },
+            });
+        },
         removeTransaksi(data) {
             this.$inertia.delete(
                 route("transaksi.hapus", {
@@ -570,7 +780,7 @@ export default {
                             icon: "success",
                             title: `Kembalian ${this.rupiah(
                                 this.tambah.bayar.final -
-                                    this.tambah.grand_total
+                                this.tambah.grand_total
                             )}`,
                             text: "Transaksi Berhasil",
                         });
