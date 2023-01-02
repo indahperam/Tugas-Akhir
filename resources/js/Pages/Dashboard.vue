@@ -30,14 +30,21 @@
                 <p class="font-semibold">{{rupiah(data_master.hutang)}}</p>
             </div>
         </div>
+        <div class="col-span-4 h-[16rem] overflow-hidden p-4">
+            <chart-area :data_chart="data_master.statistik_transaksi" title="Statistik Penjualan" label="Produk Terjual"></chart-area>
+        </div>
     </div>
 </template>
 <script>
+import ChartArea from "@/Components/chart/chartArea.vue";
 import LayoutMain from "@/Layouts/LayoutMain.vue";
 export default {
     layout: LayoutMain,
+    components: {
+        'chart-area': ChartArea,
+    },
     props: {
-        'data_master': Object
+        'data_master': Object,
     }
 };
 </script>

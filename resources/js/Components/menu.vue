@@ -197,10 +197,10 @@
             </a>
         </li>
     </Link>
-    <li class="menu-title mt-4" :class="{ hidden: sidebar }">
+    <li class="menu-title mt-4" :class="{ hidden: sidebar }" v-if="user_aktif.role == 'admin'">
         <span class="label-text truncate">Laporan</span>
     </li>
-    <Link :href="route('closing.index')">
+    <Link :href="route('closing.index')" v-if="user_aktif.role == 'admin'">
         <li>
             <a :class="{
                     active: $page.component == 'laporan/closing',
@@ -221,7 +221,7 @@
             </a>
         </li>
     </Link>
-    <Link :href="route('pengaturan.users.index')">
+    <Link :href="route('pengaturan.users.index')" v-if="user_aktif.role == 'admin'">
         <li>
             <a :class="{ active: $page.component == 'pengaturan/users' }">
                 <i class="fa-solid fa-users-gear"></i>
@@ -229,7 +229,7 @@
             </a>
         </li>
     </Link>
-    <Link :href="route('pengaturan.perusahaan.index')">
+    <Link :href="route('pengaturan.perusahaan.index')" v-if="user_aktif.role == 'admin'">
         <li>
             <a :class="{ active: $page.component == 'pengaturan/perusahaan' }">
                 <i class="fa-solid fa-house-lock"></i>

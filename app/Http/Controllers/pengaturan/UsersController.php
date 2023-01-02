@@ -13,9 +13,17 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return inertia()->render('pengaturan/users');
+        $cari = $request->cari ?: null;
+        $page = $request->showItem ?: 5;
+        $user = User::paginate($page)
+            ->withQueryString();
+        return inertia()->render('pengaturan/users', [
+            'user' => $user,
+            'search' => $cari,
+            'showItem' => $page,
+        ]);
     }
 
     /**
@@ -36,7 +44,14 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:users',
+            'email' => 'required|unique:users|email',
+            'password' => 'required|confirmed',
+            'role' => 'required',
+        ]);
+        $request['password'] = bcrypt($request->password);
+        User::create($request->all());
     }
 
     /**

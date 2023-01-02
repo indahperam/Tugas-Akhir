@@ -22,6 +22,7 @@ import inputDateVue from "./Components/inputDate.vue";
 import inputPickVue from "./Components/inputPick.vue";
 import VueSweetalert2 from "vue-sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
+import VueApexCharts from "vue3-apexcharts";
 
 const store = createStore({
     state() {
@@ -234,6 +235,7 @@ createInertiaApp({
             .use(store)
             .use(VueSweetalert2)
             .use(ZiggyVue, Ziggy)
+            .use(VueApexCharts)
             .component("modal-md", modalMd)
             .component("input-text", inputText)
             .component("input-harga", inputHargaVue)

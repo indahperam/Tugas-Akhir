@@ -27,7 +27,7 @@ class ClosingSeeder extends Seeder
         $transaksi = [];
         $transaksi_detail = [];
         $pembayaran = [];
-        for ($kode = 0; $kode < 50; $kode++) {
+        for ($kode = 0; $kode < 1000; $kode++) {
             $harga = 0;
             for ($i = 0; $i < 10; $i++) {
                 $dummy_produk = $produk[(rand(1, 50))];

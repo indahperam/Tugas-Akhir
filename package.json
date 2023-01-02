@@ -23,9 +23,11 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "apexcharts": "^3.36.3",
         "daisyui": "^2.42.1",
         "tailwind-scrollbar-hide": "^1.1.7",
         "vue-sweetalert2": "^5.0.5",
+        "vue3-apexcharts": "^1.4.1",
         "vuex": "^4.0.2"
     }
 }

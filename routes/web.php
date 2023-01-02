@@ -20,7 +20,6 @@ use App\Http\Controllers\transaksi\PengeluaranController;
 use App\Http\Controllers\transaksi\PenjualanController;
 use App\Http\Controllers\transaksi\TransaksiController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,14 +38,14 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'pengaturan', 'as' => 'pengaturan.', 'middleware' => ['auth', 'perusahaan']], function () {
     Route::resource('profil', ProfilController::class);
-    Route::resource('users', UsersController::class);
+    Route::resource('users', UsersController::class)->middleware(['admin']);
 
-    Route::resource('perusahaan', PerusahaanController::class);
+    Route::resource('perusahaan', PerusahaanController::class)->middleware(['admin']);
     Route::post('perusahaan/logo', [PerusahaanController::class, 'logo_update'])->name('perusahaan.logo_update');
 });
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::resource('dashboard', DashboardController::class);
     // master 
     Route::prefix('master')->group(function () {
