@@ -3,9 +3,6 @@
         <div class="card-body">
             <div class="card-title mb-4">
                 List Data Hutang
-                <label for="tambah" class="btn btn-xs btn-success"
-                    ><i class="fa fa-plus"></i
-                ></label>
             </div>
             <datatable
                 :dataPage="hutang.links"
@@ -429,8 +426,8 @@ export default {
                                 kembalian >= 0
                                     ? " Transaksi Berhasil"
                                     : `Kembalian ${this.rupiah(
-                                          Math.abs(kembalian)
-                                      )}`,
+                                        Math.abs(kembalian)
+                                    )}`,
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 window.open(

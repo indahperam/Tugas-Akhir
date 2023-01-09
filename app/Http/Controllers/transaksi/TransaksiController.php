@@ -107,7 +107,6 @@ class TransaksiController extends Controller
                     'stok' => $q['stok']
                 ]);
                 unset($q['stok']);
-                dd($q, 1);
                 $q['transaksi_id'] = $transaksi->id;
                 return $q;
             })->toArray();
