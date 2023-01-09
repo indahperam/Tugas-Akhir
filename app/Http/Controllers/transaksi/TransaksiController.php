@@ -99,9 +99,9 @@ class TransaksiController extends Controller
                 'lunas' => 'belum lunas'
             ];
             $transaksi = null;
-            // $transaksi = Transaksi::create($final);
-            // $transaksi->kode = "TR-" . sprintf("%05s", $transaksi->id);
-            // $transaksi->update();
+            $transaksi = Transaksi::create($final);
+            $transaksi->kode = "TR-" . sprintf("%05s", $transaksi->id);
+            $transaksi->update();
             $detail = collect($request->keranjang)->map(function ($q) use ($transaksi) {
                 Produk::where('kode', $q['kode'])->update([
                     'stok' => $q['stok']
