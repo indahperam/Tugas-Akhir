@@ -127,7 +127,7 @@
                 </div>
             </div>
             <div
-                class="drawer-side scrollbar-hide shadow-[6px_0px_10px_0px_#00000024]"
+                class="drawer-side  shadow-[6px_0px_10px_0px_#00000024]"
             >
                 <label for="my-drawer-2" class="drawer-overlay"></label>
                 <ul
@@ -206,20 +206,25 @@ export default {
 .notif-leave-to {
     transform: translateX(200%);
 }
+
 .notif-enter-to,
 .notif-leave-from {
     transform: translateX(0%);
 }
+
 .notif-enter-active {
     animation: slide-right 0.5s ease-in-out;
 }
+
 .notif-leave-active {
     animation: slide-right 0.5s ease-in-out reverse;
 }
+
 @keyframes slide-right {
     0% {
         transform: translateX(200%);
     }
+
     100% {
         transform: translateX(0%);
     }
@@ -229,13 +234,16 @@ export default {
 .page-leave-to {
     opacity: 0%;
 }
+
 .page-enter-to,
 .page-leave-from {
     opacity: 100%;
 }
+
 .page-enter-active {
     animation: fade-in 0.4s ease-in-out;
 }
+
 .page-leave-active {
     animation: fade-in 0.4s ease-in-out reverse;
 }
@@ -245,6 +253,7 @@ export default {
         transform: scale(90%);
         opacity: 0%;
     }
+
     100% {
         transform: scale(100%);
         opacity: 100%;
