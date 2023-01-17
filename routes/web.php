@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\laporan\LabaRugiController;
 use App\Http\Controllers\master\JenisPembayaranController;
 use App\Http\Controllers\master\KategoriController;
 use App\Http\Controllers\master\MemberController;
@@ -66,6 +67,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('save', [TransaksiController::class, 'save_transaksi'])->name('transaksi.save');
         Route::delete('hapus/{transaksi}', [TransaksiController::class, 'hapus_transaksi'])->name('transaksi.hapus');
         Route::apiResource('hutang', HutangController::class);
+        Route::apiResource('labarugi', LabaRugiController::class);
         Route::apiResource('pembelian', PembelianController::class);
         Route::group(['prefix' => 'data', 'as' => 'data.'], function () {
             Route::apiResource('penjualan', DataPenjualanController::class);

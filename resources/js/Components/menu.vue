@@ -161,11 +161,11 @@
         <li>
             <a
                 :class="{
-                    active: $page.component == 'transaksi/hutang',
+                    active: $page.component == 'transaksi/piutang',
                 }"
             >
                 <i class="fa-solid fa-money-bill"></i>
-                <div :class="{ hidden: sidebar }" class="truncate">Hutang</div>
+                <div :class="{ hidden: sidebar }" class="truncate">Piutang</div>
             </a>
         </li>
     </Link>
@@ -207,6 +207,18 @@
                 }">
                 <i class="fa-solid fa-file-zipper"></i>
                 <div :class="{ hidden: sidebar }" class="truncate">Data Closing</div>
+            </a>
+        </li>
+    </Link>
+    <Link :href="route('labarugi.index')">
+        <li>
+            <a
+                :class="{
+                    active: $page.component == 'laporan/Laba_Rugi',
+                }"
+            >
+                <i class="fa-solid fa-money-bill"></i>
+                <div :class="{ hidden: sidebar }" class="truncate">Laba Rugi</div>
             </a>
         </li>
     </Link>
