@@ -2,7 +2,7 @@
     <div class="card shadow-lg">
         <div class="card-body">
             <div class="card-title mb-4">
-                List Data Hutang
+                List Data Piutang
             </div>
             <datatable
                 :dataPage="hutang.links"

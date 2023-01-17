@@ -41,7 +41,7 @@ class HutangController extends Controller
             ->latest()
             ->paginate($page)
             ->withQueryString();
-        return inertia()->render('transaksi/hutang', [
+        return inertia()->render('transaksi/piutang', [
             'hutang' => $hutang,
             'jenis_pembayaran' => JenisPembayaran::all(),
             'search' => $cari,
