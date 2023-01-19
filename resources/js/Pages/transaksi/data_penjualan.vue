@@ -1,7 +1,12 @@
 <template lang="">
     <div class="card shadow-lg">
         <div class="card-body">
-            <div class="card-title mb-4">List Data Penjualan</div>
+            <div class="card-title mb-4">List Data Penjualan <Link method="post" as="button" :href="route('penjualan.cetak',{
+                data : {
+                    waktu : [cari_dari,cari_sampai],
+                penjualan : penjualan.data,
+                }
+            })" class="btn btn-xs">cetak laporan</Link></div>
             <datatable
                 :dataPage="penjualan.links"
                 :dataTotal="penjualan.total"
@@ -11,6 +16,7 @@
                 v-model:dateStart="cari_dari"
                 v-model:dateEnd="cari_sampai"
             >
+
                 <template v-slot:content>
                     <div class="mt-4 overflow-x-auto scrollbar-hide">
                         <table class="table table-compact w-full text-center">

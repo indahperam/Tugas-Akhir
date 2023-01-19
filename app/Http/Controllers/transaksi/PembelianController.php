@@ -93,4 +93,9 @@ class PembelianController extends Controller
     {
         //
     }
+    public function pembelian_cetak(Request $request)
+    {
+        $data_pembelian = $request->data;
+        return inertia()->render('print/pembelian', compact('data_pembelian'));
+    }
 }

@@ -62,6 +62,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('transaksi')->group(function () {
         Route::resource('pengeluaran', PengeluaranController::class);
         Route::resource('penjualan', PenjualanController::class);
+        Route::post('penjualan/cetak', [PenjualanController::class, 'penjualan_cetak'])->name('penjualan.cetak');
         Route::post('simpan', [TransaksiController::class, 'simpan_transaksi'])->name('transaksi.simpan');
         Route::post('simpan/hutang', [TransaksiController::class, 'hutang_transaksi'])->name('transaksi.hutang');
         Route::post('save', [TransaksiController::class, 'save_transaksi'])->name('transaksi.save');
@@ -69,6 +70,7 @@ Route::middleware(['auth'])->group(function () {
         Route::apiResource('hutang', HutangController::class);
         Route::apiResource('labarugi', LabaRugiController::class);
         Route::apiResource('pembelian', PembelianController::class);
+        Route::post('pembelian/cetak', [PembelianController::class, 'pembelian_cetak'])->name('pembelian.cetak');
         Route::group(['prefix' => 'data', 'as' => 'data.'], function () {
             Route::apiResource('penjualan', DataPenjualanController::class);
             Route::apiResource('pembelian', DataPembelian::class);

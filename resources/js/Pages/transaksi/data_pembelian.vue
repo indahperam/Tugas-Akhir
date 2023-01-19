@@ -1,7 +1,12 @@
 <template lang="">
     <div class="card shadow-lg">
         <div class="card-body">
-            <div class="card-title mb-4">List Data Pembelian</div>
+            <div class="card-title mb-4">List Data Pembelian <Link method="post" as="button" :href="route('pembelian.cetak',{
+                data : {
+                    waktu : [cari_dari,cari_sampai],
+                pembelian : pembelian.data,
+                }
+            })" class="btn btn-xs">cetak laporan</Link></div>
             <datatable
                 :dataPage="pembelian.links"
                 :dataTotal="pembelian.total"

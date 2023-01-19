@@ -139,4 +139,9 @@ class PenjualanController extends Controller
     {
         //
     }
+    public function penjualan_cetak(Request $request)
+    {
+        $data_penjualan = $request->data;
+        return inertia()->render('print/penjualan', compact('data_penjualan'));
+    }
 }
