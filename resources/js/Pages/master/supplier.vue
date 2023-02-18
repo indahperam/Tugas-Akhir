@@ -6,6 +6,9 @@
                 <label for="tambah" class="btn btn-xs btn-success"
                     ><i class="fa fa-plus"></i
                 ></label>
+                <button class="btn btn-xs " @click="printSupplier"
+                    ><i class="fa fa-print"></i
+                ></button>
             </div>
             <div class="mt-4">
                 <datatable
@@ -224,6 +227,15 @@ export default {
             this.hapus.id = data.id;
             this.hapus.nama = data.nama;
         },
+        async printSupplier() {
+            let print = await window.open(route('supplier.print_all'))
+            await print.addEventListener("DOMContentLoaded", () => {
+                print.window.onafterprint = (event) => {
+                    print.close();
+                };
+                print.window.print()
+            });
+        }
     },
     props: {
         supplier: Object,

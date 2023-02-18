@@ -114,4 +114,10 @@ class MemberController extends Controller
     {
         $member->delete();
     }
+    
+    public function print_all()
+    {
+        $member = Member::all();
+        return inertia()->render('print/memberPrint',compact('member'));
+    }
 }

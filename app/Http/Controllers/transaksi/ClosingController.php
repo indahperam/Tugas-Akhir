@@ -92,4 +92,10 @@ class ClosingController extends Controller
     {
         $closing->delete();
     }
+    public function print(Closing $closing)
+    {
+        $closing->load('user');
+        $closing['waktu'] = date('d M Y', strtotime($closing->created_at));
+        return inertia()->render('print/printClosing',compact('closing'));
+    }
 }

@@ -37,6 +37,28 @@ class LabaRugiController extends Controller
         return inertia()->render('laporan/Laba_Rugi', ['master' => $master]);
     }
 
+    public function print()
+    {
+        $transkasi = Transaksi::whereMonth('created_at', date('m'))->get(['total', 'diskon_total', 'ppn_total']);
+        $penjualan_kotor = $transkasi->sum('total');
+        $diskon_penjualan = $transkasi->sum('diskon_total');
+        $penjualan_bersih = $penjualan_kotor - $diskon_penjualan;
+
+        $pengeluaran = Pengeluaran::whereMonth('created_at', date('m'))->get(['nominal']);
+        $pembelian = Pembelian::whereMonth('created_at', date('m'))->get(['total']);
+
+        $pengeluaran_operasional = $pengeluaran->sum('nominal');
+        $total_pembelian = $pembelian->sum('total');
+        $total_beban = $pengeluaran_operasional + $total_pembelian;
+
+        $laba_sebelum_pajak = $penjualan_bersih - $total_beban;
+        $pajak_penghasilan = $transkasi->sum('ppn_total');
+
+        $laba_bersih = $laba_sebelum_pajak - $pajak_penghasilan;
+        $master = compact('penjualan_kotor', 'diskon_penjualan', 'penjualan_bersih', 'pengeluaran_operasional', 'total_pembelian', 'total_beban', 'laba_sebelum_pajak', 'pajak_penghasilan', 'laba_bersih');
+        return inertia()->render('print/labaRugiPrint', ['master' => $master]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

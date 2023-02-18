@@ -61,6 +61,11 @@
                                                 class="btn btn-xs btn-error"
                                                 ><i class="fa fa-trash"></i
                                             ></label>
+                                            <label
+                                                @click="printClosing(item.id)"
+                                                class="btn btn-xs"
+                                                ><i class="fa fa-print"></i
+                                            ></label>
                                         </td>
                                     </tr>
                                 </transition-group>
@@ -341,6 +346,15 @@ export default {
                     this.notifikasi('success', 'Closing berhasil dihapus!')
                 }
             })
+        },
+        async printClosing(data){
+            let print = await window.open(route('closing.print',{closing : data}))
+            await print.addEventListener("DOMContentLoaded", () => {
+                print.window.onafterprint = (event) => {
+                    print.close();
+                };
+                print.window.print()
+            });
         }
     }
 }

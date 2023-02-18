@@ -54,7 +54,9 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('kategori', KategoriController::class);
         Route::resource('produk', ProdukController::class);
         Route::resource('member', MemberController::class);
+        Route::get('member/print/all', [MemberController::class,'print_all'])->name('member.print_all');
         Route::resource('supplier', SupplierController::class);
+        Route::get('supplier/print/all', [SupplierController::class,'print_all'])->name('supplier.print_all');
         Route::resource('jenis-pembayaran', JenisPembayaranController::class);
     });
 
@@ -69,6 +71,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('hapus/{transaksi}', [TransaksiController::class, 'hapus_transaksi'])->name('transaksi.hapus');
         Route::apiResource('hutang', HutangController::class);
         Route::apiResource('labarugi', LabaRugiController::class);
+        Route::get('laba_rugi/print', [LabaRugiController::class,'print'])->name('labaRugi.print');
         Route::apiResource('pembelian', PembelianController::class);
         Route::post('pembelian/cetak', [PembelianController::class, 'pembelian_cetak'])->name('pembelian.cetak');
         Route::group(['prefix' => 'data', 'as' => 'data.'], function () {
@@ -76,6 +79,7 @@ Route::middleware(['auth'])->group(function () {
             Route::apiResource('pembelian', DataPembelian::class);
         });
         Route::apiResource('closing', ClosingController::class);
+        Route::get('closing/print/{closing}', [ClosingController::class,'print'])->name('closing.print');
     });
     // pengaturan 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -85,6 +89,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/perusahaan', [PerusahaanController::class, 'create'])->name('perusahaan.create');
     Route::post('/perusahaan', [PerusahaanController::class, 'store'])->name('perusahaan.store');
     Route::post('/theme', [ProfileController::class, 'theme'])->name('theme');
+
 });
 
 Route::get('print/lunas', [TransaksiController::class, 'print_lunas'])->name('print_lunas');

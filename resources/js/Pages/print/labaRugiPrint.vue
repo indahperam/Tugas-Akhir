@@ -1,5 +1,6 @@
 <template lang="">
-    <button class="btn btn-sm gap-2 mb-3" @click="print()"><i class="fa fa-print"></i> Print Laporan</button>
+    <div class="w-[21cm]">
+        <div class="text-center font-bold text-xl uppercase my-4">Laporan Laba Rugi</div>
     <div class="grid text-2xl font-bold">
         Pendapatan Penjualan
     </div>
@@ -52,25 +53,14 @@
         <div class=""></div>
         <div class="">{{rupiah(master.laba_bersih)}}</div>
     </div>
+    </div>
 </template>
 <script>
 import LayoutMain from '@/Layouts/LayoutMain.vue';
 export default {
-    layout: LayoutMain,
     props: {
         master: Object,
     },
-    methods : {
-        async print(){
-            let print = await window.open(route('labaRugi.print'))
-            await print.addEventListener("DOMContentLoaded", async () => {
-                print.window.onafterprint = (event) => {
-                    print.close();
-                };
-                print.window.print()
-            });
-        }
-    }
 }
 </script>
 <style lang="">

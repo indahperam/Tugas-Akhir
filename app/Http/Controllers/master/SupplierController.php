@@ -114,4 +114,9 @@ class SupplierController extends Controller
     {
         $supplier->delete();
     }
+    public function print_all()
+    {
+        $supplier = Supplier::all();
+        return inertia()->render('print/supplierPrint',compact('supplier'));
+    }
 }
