@@ -36,8 +36,8 @@ export default {
         <div
             class="grid lg:grid-cols-2 w-full h-full bg-base-200 p-4 rounded-[2rem] max-w-4xl justify-items-center overflow-hidden border-2 border-base-300 shadow-[rgba(0,_0,_0,_0.09)_30px_30px_40px_3px]">
             <div class="w-96 h-full hidden lg:flex justify-center items-center">
-                <div class="w-96 h-96">
-                    <img :src="img" alt="" class="w-full" />
+                <div class="w-full h-full">
+                    <img :src="img" alt="" class="w-full object-cover h-full" />
                 </div>
             </div>
             <div class="w-full h-full flex flex-col justify-center p-4 lg:p-8 lg:border-l-2 border-base-300">

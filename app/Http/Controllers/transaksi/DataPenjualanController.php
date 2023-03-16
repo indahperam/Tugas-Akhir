@@ -31,7 +31,7 @@ class DataPenjualanController extends Controller
             ->selectRaw('*,date_format(created_at,"%d %M %Y %H:%i") as tanggal')
             ->whereBetween('created_at', [$dari, $sampai])
             ->where('active', false)
-            ->where('lunas', 'lunas')
+            // ->where('lunas', 'lunas')
             ->where(function ($q) use ($cari, $data) {
                 $q->where('kode', 'like', '%' . $cari . '%')
                     ->orWhere('grand_total', 'like', '%' . $cari . '%')
