@@ -118,7 +118,7 @@
                                         <label class="label">
                                             <span class="label-text text-white">Selisih</span>
                                         </label>
-                                        <input type="text" disabled :value="rupiah(closing_form.selisih)" class="input input-bordered">
+                                        <input type="text" disabled :value="rupiah(closing_form.selisih > 0 : 0)" class="input input-bordered">
                                     </div>
                                 </div>
                             </div>
